@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {}
+    "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\BusinessLogic\\BusinessLogic.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {
+    "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
-        "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\obj\\",
+        "projectPath": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\BusinessLogic\\BusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+        "outputPath": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +32,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
-                "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj"
+              "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\Data.csproj": {
+                "projectPath": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\Data.csproj"
               }
             }
           }
@@ -85,21 +89,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
+    "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
+        "projectUniqueName": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
-        "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\JobKhojo\\Data\\obj\\",
+        "projectPath": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\Data.csproj",
+        "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+        "outputPath": "C:\\Mandark\\Office\\JobKhojo\\JobKhojo-An-online-job-seaching-platform\\Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -166,7 +174,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
