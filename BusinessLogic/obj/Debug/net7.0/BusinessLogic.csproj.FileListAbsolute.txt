@@ -1,0 +1,17 @@
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\BusinessLogic.deps.json
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\BusinessLogic.dll
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\BusinessLogic.pdb
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\Data.dll
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\Data.pdb
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.csproj.AssemblyReference.cache
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.AssemblyInfoInputs.cache
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.AssemblyInfo.cs
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.csproj.CoreCompileInputs.cache
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.csproj.CopyComplete
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.dll
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\refint\BusinessLogic.dll
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.pdb
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\ref\BusinessLogic.dll
+D:\Projects\JobKhojo\BusinessLogic\bin\Debug\net7.0\BusinessLogic.runtimeconfig.json
+D:\Projects\JobKhojo\BusinessLogic\obj\Debug\net7.0\BusinessLogic.genruntimeconfig.cache
