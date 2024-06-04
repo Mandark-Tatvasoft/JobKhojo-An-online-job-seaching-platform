@@ -30,6 +30,8 @@ public class AuthController : ControllerBase
                 var jwtToken = _jwt.GenerateToken(user);
                 Response.Cookies.Append("jwt", jwtToken);
 
+                user.Token = jwtToken;
+
                 res.IsSuccess = true;
                 res.Message = "User Logged in successfully";
                 res.Data = user;

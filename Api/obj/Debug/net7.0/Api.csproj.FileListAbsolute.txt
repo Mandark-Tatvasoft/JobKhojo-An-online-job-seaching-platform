@@ -53,3 +53,9 @@ D:\Projects\JobKhojo\api\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
 D:\Projects\JobKhojo\api\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Projects\JobKhojo\api\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 D:\Projects\JobKhojo\api\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\System.Web.Cors.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\System.Net.Http.Formatting.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\System.Web.Http.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\System.Web.Http.Cors.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\Newtonsoft.Json.dll
+d:\Projects\JobKhojo\Api\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll

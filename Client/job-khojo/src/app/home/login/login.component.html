@@ -1,0 +1,37 @@
+<div
+  class="container mt-5 d-flex justify-content-center align-items-center login-container"
+>
+  <div>
+    <mat-card>
+      <mat-card-content class="p-5">
+        <form id="sigInForm" [formGroup]="signInForm" (submit)="handleSubmit()">
+          <div class="d-flex justify-content-center mb-5">
+            <h3 class="fw-bold">Login</h3>
+          </div>
+          <div class="d-flex flex-column">
+            <mat-form-field class="form-input mb-2">
+              <mat-label>Email</mat-label>
+              <input matInput name="email" formControlName="email" />
+              @if (signInForm.get('email')?.hasError('email') &&
+              !signInForm.get('email')?.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (signInForm.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input">
+              <mat-label>Password</mat-label>
+              <input matInput name="password" formControlName="password" />
+              @if (signInForm.get('password')?.hasError('required')) {
+              <mat-error>Password is required</mat-error>
+              }
+            </mat-form-field>
+            <div class="d-flex justify-content-center">
+              <button type="submit" mat-flat-button>Sign in</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

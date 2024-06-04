@@ -14,6 +14,16 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<ILogin, Login>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+    });
+});
 
 
 var app = builder.Build();
@@ -26,6 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 

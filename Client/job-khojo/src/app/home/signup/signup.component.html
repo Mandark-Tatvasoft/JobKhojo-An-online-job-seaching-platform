@@ -1,0 +1,73 @@
+<div
+  class="container mt-5 d-flex justify-content-center align-items-center login-container"
+>
+  <div>
+    <mat-card>
+      <mat-card-content class="p-5">
+        <form id="sigInForm" [formGroup]="signUpForm" (submit)="handleSubmit()">
+          <div class="d-flex justify-content-center mb-5">
+            <h3 class="fw-bold">Sign Up</h3>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Firstname</mat-label>
+              <input matInput name="firstname" formControlName="firstname" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Lastname</mat-label>
+              <input matInput name="lastname" formControlName="lastname" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Email</mat-label>
+              <input matInput name="email" formControlName="email" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Username</mat-label>
+              <input matInput name="username" formControlName="username" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                type="password"
+                name="password"
+                formControlName="password"
+              />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Confirm Password</mat-label>
+              <input
+                matInput
+                name="confirmPassword"
+                formControlName="confirmPassword"
+              />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Mobile</mat-label>
+              <input matInput name="mobile" formControlName="mobile" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Role</mat-label>
+              <mat-select name="role" formControlName="role" #role>
+                <mat-option value="1">Admin</mat-option>
+                <mat-option value="2">Recruiter</mat-option>
+                <mat-option value="3">Job-seeker</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-input col-md-6" *ngIf="role.value == 2">
+              <mat-label>Company Name(For Recruiter)</mat-label>
+              <input
+                matInput
+                name="companyName"
+                formControlName="companyName"
+              />
+            </mat-form-field>
+            <div class="d-flex justify-content-center">
+              <button type="submit" mat-flat-button>Sign up</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

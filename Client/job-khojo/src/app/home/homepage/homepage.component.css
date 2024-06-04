@@ -1,0 +1,22 @@
+#website-title-text {
+  color: #005cc1;
+  margin-bottom: 20px;
+}
+.title-wrapper {
+  height: 60vh;
+}
+.home-container {
+  margin-left: 10rem;
+  margin-right: 10rem;
+}
+#website-subtitle-text {
+  font-size: 20px;
+  font-weight: 500;
+}
+#hero-img {
+  height: 550px;
+  margin: 20px;
+}
+.main-content {
+  width: 100%;
+}
