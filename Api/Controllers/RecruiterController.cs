@@ -1,12 +1,13 @@
+using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("2")]
 public class RecruiterController : ControllerBase
 {
     private readonly IRecruiter _recruiter;
@@ -29,7 +30,6 @@ public class RecruiterController : ControllerBase
         }
         else
         {
-            res.Message = "No Data Found";
             return Ok(res);
         }
     }
@@ -38,13 +38,20 @@ public class RecruiterController : ControllerBase
     public IActionResult Post(JobModel model)
     {
         var res = new ResponseModel<string>();
-        var IsSuccess = _recruiter.AddJob(model);
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var IsSuccess = _recruiter.AddJob(model, token);
         if (IsSuccess)
         {
             res.IsSuccess = true;
             res.Message = "Successfully added the Job listing";
+            return Ok(res);
         }
-        return Ok(res);
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "Error while adding job";
+            return BadRequest(res);
+        }
     }
 
     [HttpPut("EditJob")]

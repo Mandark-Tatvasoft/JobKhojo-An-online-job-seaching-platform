@@ -1752,19 +1752,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pct46\\.nuget\\packages\\": {}
+    "C:\\Users\\manda\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
+      "projectUniqueName": "C:\\Mandark\\Office\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
       "projectName": "BusinessLogic",
-      "projectPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
-      "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\obj\\",
+      "projectPath": "C:\\Mandark\\Office\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
+      "packagesPath": "C:\\Users\\manda\\.nuget\\packages\\",
+      "outputPath": "C:\\Mandark\\Office\\JobKhojo\\BusinessLogic\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\manda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1778,8 +1783,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
-              "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj"
+            "C:\\Mandark\\Office\\JobKhojo\\Data\\Data.csproj": {
+              "projectPath": "C:\\Mandark\\Office\\JobKhojo\\Data\\Data.csproj"
             }
           }
         }
@@ -1835,7 +1840,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

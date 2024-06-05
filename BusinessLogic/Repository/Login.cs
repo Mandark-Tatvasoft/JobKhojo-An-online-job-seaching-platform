@@ -106,13 +106,11 @@ public class Authorize : Attribute, IAuthorizationFilter
         var _jwt = context.HttpContext.RequestServices.GetService<IJwtService>();
 
 
-        var request = context.HttpContext.Request;
-        var token = request.Cookies["jwt"];
+        var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
 
         if (token == null || !_jwt.ValidateToken(token, out JwtSecurityToken jwtToken))
         {
-            context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Auth", action = "Error" }));
             return;
         }
 
@@ -122,7 +120,6 @@ public class Authorize : Attribute, IAuthorizationFilter
 
         if (roleClaim == null)
         {
-            context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Auth", action = "Error" }));
             return;
         }
 
@@ -130,7 +127,6 @@ public class Authorize : Attribute, IAuthorizationFilter
 
         if (roleClaim.Value != _role || _role == null)
         {
-            context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Auth", action = "Error" }));
             return;
         }
     }

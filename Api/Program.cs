@@ -2,6 +2,7 @@ using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IRecruiter, Recruiter>();
 builder.Services.AddScoped<IJobs, Jobs>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

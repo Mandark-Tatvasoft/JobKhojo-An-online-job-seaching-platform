@@ -3,6 +3,7 @@ using Data.ApplicationDbContext;
 using Data.Data;
 using Data.Models;
 using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace BusinessLogic.Repository;
 
@@ -10,10 +11,12 @@ public class Recruiter : IRecruiter
 {
     private readonly AppDbContext _context;
     private readonly IHttpContextAccessor _http;
-    public Recruiter(AppDbContext context, IHttpContextAccessor http)
+    private readonly IJwtService _jwt;
+    public Recruiter(AppDbContext context, IHttpContextAccessor http, IJwtService jwt)
     {
         _context = context;
         _http = http;
+        _jwt = jwt;
     }
     public List<JobModel> GetAllListed(int id)
     {
@@ -43,13 +46,14 @@ public class Recruiter : IRecruiter
         return model;
     }
 
-    public bool AddJob(JobModel job)
+    public bool AddJob(JobModel job, string token)
     {
+        _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
         var newJob = new Job()
         {
             Title = job.Title,
             Description = job.Description,
-            CreatedBy = (int)_http.HttpContext.Session.GetInt32("userid"),
+            CreatedBy = int.Parse(validatedToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value),
             IsActive = true,
             Openings = job.Openings
         };

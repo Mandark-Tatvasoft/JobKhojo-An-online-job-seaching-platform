@@ -22,14 +22,12 @@ public class AuthController : ControllerBase
     {
         var res = new ResponseModel<UserModel>();
 
-        if (model != null)
+        if (ModelState.IsValid)
         {
             var user = _login.LogIn(model);
-            if (user.UserId != null)
+            if (user.UserId != 0)
             {
-                Request.HttpContext.Session.SetInt32("userid", user.UserId);
                 var jwtToken = _jwt.GenerateToken(user);
-                Response.Cookies.Append("jwt", jwtToken);
 
                 user.Token = jwtToken;
 
@@ -48,8 +46,8 @@ public class AuthController : ControllerBase
         else
         {
             res.IsSuccess = false;
-            res.Message = "Please fill the details";
-            return NotFound(res);
+            res.Message = "Please provide data in proper format";
+            return BadRequest(res);
         }
     }
 
@@ -62,7 +60,6 @@ public class AuthController : ControllerBase
             var res = new ResponseModel<string>();
             res.IsSuccess = false;
             res.Message = "Validations not true";
-            res.Data = ModelState.ErrorCount.ToString();
             return BadRequest(res);
         }
         else

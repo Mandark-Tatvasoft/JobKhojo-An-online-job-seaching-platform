@@ -36,6 +36,7 @@ export class LoginComponent {
     userId: 0,
     role: 0,
     userName: '',
+    token: ''
   };
 
   constructor(
@@ -63,8 +64,10 @@ export class LoginComponent {
       this.service.login(this.loginModel).subscribe((res) => {
         if (res.isSuccess) {
           this.user = res.data;
+          
           localStorage.setItem('role', this.user.role.toString());
           localStorage.setItem('userid', this.user.userId.toString());
+          localStorage.setItem('jwtToken', this.user.token);
           switch (res.data.role) {
             case '1':
               this.router.navigate(['admin']);
@@ -76,9 +79,6 @@ export class LoginComponent {
               this.router.navigate(['job-seeker']);
               return;
           }
-          this.toastr.success(res.message, 'Successfully Loggged in', {
-            timeOut: 2000,
-          });
         } else {
           this.toastr.error(res.message, '', {
             timeOut: 2000,
