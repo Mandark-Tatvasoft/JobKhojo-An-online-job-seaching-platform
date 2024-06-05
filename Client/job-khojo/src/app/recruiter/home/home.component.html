@@ -1,1 +1,4 @@
-<p>home works!</p>
+<div class="container mt-5">
+  <h4 class="fw-medium">Jobs listed by you</h4>
+  <app-job-card *ngFor="let job of jobs" [Job]="job" />
+</div>

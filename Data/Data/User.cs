@@ -28,13 +28,17 @@ public partial class User
 
     public int? RoleId { get; set; }
 
-    public decimal? Mobile { get; set; }
-
     [Column(TypeName = "character varying")]
     public string? Resume { get; set; }
 
     [Column(TypeName = "character varying")]
     public string? CompanyName { get; set; }
+
+    [Column(TypeName = "character varying")]
+    public string? Mobile { get; set; }
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<Job> Jobs { get; set; } = new List<Job>();
 
     [ForeignKey("RoleId")]
     [InverseProperty("Users")]

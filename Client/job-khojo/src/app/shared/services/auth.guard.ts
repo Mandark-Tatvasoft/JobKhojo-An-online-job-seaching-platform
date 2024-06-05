@@ -6,7 +6,7 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
 
   let role = localStorage.getItem('role');
   let roleType = getRole(role);
-  if (route.url[0].path == roleType) {
+  if (route.url[0].path == roleType || route.url[0].path == 'signup') {
     return true;
   } else {
     router.navigate(['login']);

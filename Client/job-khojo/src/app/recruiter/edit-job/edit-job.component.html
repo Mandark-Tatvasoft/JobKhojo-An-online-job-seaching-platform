@@ -1,0 +1,56 @@
+<div
+  class="container mt-5 d-flex justify-content-center align-items-center login-container"
+>
+  <div class="row w-100">
+    <form
+      id="sigInForm"
+      [formGroup]="editJobForm"
+      (submit)="handleSubmit()"
+      class="col-12"
+    >
+      <div class="d-flex justify-content-center mb-5">
+        <h3 class="fw-bold">Login</h3>
+      </div>
+      <div class="row">
+        <mat-form-field class="form-input mb-2 col-md-6">
+          <mat-label>Title</mat-label>
+          <input matInput name="title" formControlName="title" />
+        </mat-form-field>
+        <mat-form-field class="form-input mb-2 col-md-6">
+          <mat-label>Openings</mat-label>
+          <input
+            type="number"
+            matInput
+            name="openings"
+            formControlName="openings"
+          />
+        </mat-form-field>
+        <mat-form-field class="form-input mb-2 col-12">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            name="description"
+            formControlName="description"
+          ></textarea>
+          @if (editJobForm.get('description')?.hasError('required')) {
+          <mat-error>Description is required</mat-error>
+          }
+        </mat-form-field>
+        <span></span>
+        <p>
+          <mat-slide-toggle
+            name="isActive"
+            formControlName="isActive"
+            color="primary"
+            labelPosition="before"
+            >Is it open for application?</mat-slide-toggle
+          >
+        </p>
+
+        <div class="d-flex justify-content-center">
+          <button type="submit" mat-flat-button>Sign in</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

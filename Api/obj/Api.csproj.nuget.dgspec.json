@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Projects\\JobKhojo\\Api\\Api.csproj": {}
+    "D:\\Projects\\JobKhojo\\Api\\Api.csproj": {}
   },
   "projects": {
-    "d:\\Projects\\JobKhojo\\Api\\Api.csproj": {
+    "D:\\Projects\\JobKhojo\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Projects\\JobKhojo\\Api\\Api.csproj",
+        "projectUniqueName": "D:\\Projects\\JobKhojo\\Api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "d:\\Projects\\JobKhojo\\Api\\Api.csproj",
+        "projectPath": "D:\\Projects\\JobKhojo\\Api\\Api.csproj",
         "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "d:\\Projects\\JobKhojo\\Api\\obj\\",
+        "outputPath": "D:\\Projects\\JobKhojo\\Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,11 +28,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "d:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {
-                "projectPath": "d:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj"
+              "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj"
               },
-              "d:\\Projects\\JobKhojo\\Data\\Data.csproj": {
-                "projectPath": "d:\\Projects\\JobKhojo\\Data\\Data.csproj"
+              "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
+                "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj"
               }
             }
           }
@@ -107,14 +107,14 @@
         }
       }
     },
-    "d:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {
+    "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "d:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
+        "projectPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\BusinessLogic.csproj",
         "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "d:\\Projects\\JobKhojo\\BusinessLogic\\obj\\",
+        "outputPath": "D:\\Projects\\JobKhojo\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -131,8 +131,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "d:\\Projects\\JobKhojo\\Data\\Data.csproj": {
-                "projectPath": "d:\\Projects\\JobKhojo\\Data\\Data.csproj"
+              "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
+                "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj"
               }
             }
           }
@@ -192,14 +192,14 @@
         }
       }
     },
-    "d:\\Projects\\JobKhojo\\Data\\Data.csproj": {
+    "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Projects\\JobKhojo\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "d:\\Projects\\JobKhojo\\Data\\Data.csproj",
+        "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "d:\\Projects\\JobKhojo\\Data\\obj\\",
+        "outputPath": "D:\\Projects\\JobKhojo\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",

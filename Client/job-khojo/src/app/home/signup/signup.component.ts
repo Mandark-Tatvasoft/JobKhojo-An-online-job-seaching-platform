@@ -15,9 +15,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { AuthService } from '../services/login.service';
+import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Signup } from '../../core/models/signup.model';
 
 @Component({
   selector: 'app-signup',
@@ -36,6 +37,18 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
   signUpForm!: FormGroup;
+  model: Signup = {
+    firstname: '',
+    lastname: '',
+    email: '',
+    mobile: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    role: 0,
+    companyName: '',
+    resume: '',
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -66,15 +79,24 @@ export class SignupComponent {
   }
   handleSubmit() {
     if (this.signUpForm.valid) {
-      // this.authService.signup(this.signUpForm).subscribe((data) => {
-      //   if (data.isSuccess) {
-      //     this.router.navigate(['login']);
-      //     this.toastr.success(data.message, 'Successfully Loggged in', {
-      //       timeOut: 2000,
-      //     });
-      //   }
-      // });
-      console.log('hii');
+      this.model.firstname = this.signUpForm.value.firstname;
+      this.model.lastname = this.signUpForm.value.lastname;
+      this.model.email = this.signUpForm.value.email;
+      this.model.role = this.signUpForm.value.role;
+      this.model.password = this.signUpForm.value.password;
+      this.model.confirmPassword = this.signUpForm.value.confirmPassword;
+      this.model.companyName = this.signUpForm.value.companyName;
+      this.model.mobile = this.signUpForm.value.mobile;
+      this.model.username = this.signUpForm.value.username;
+
+      this.authService.signup(this.model).subscribe((data) => {
+        if (data.isSuccess) {
+          this.router.navigate(['login']);
+          this.toastr.success(data.message, 'Successfully Created user!', {
+            timeOut: 2000,
+          });
+        }
+      });
     }
   }
 

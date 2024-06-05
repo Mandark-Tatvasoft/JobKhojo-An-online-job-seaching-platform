@@ -1,1 +1,26 @@
-<p>job-card works!</p>
+<mat-card>
+  <mat-card-content>
+    <div class="d-flex justify-content-between">
+      <div>
+        <h6 class="fs-5 fw-medium">{{ Job.title }}</h6>
+        <div class="p-2">
+          <p class="fs-6 mb-1">{{ Job.description }}</p>
+          <div class="openings">
+            Openings: <strong>{{ Job.openings }}</strong>
+          </div>
+          <div class="openings mb-0" *ngIf="isRecruiter">
+            No. of Applicants: <strong>{{ Job.appliedBy }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <div *ngIf="isRecruiter">
+          <button mat-flat-button (click)="editJob(Job.jobId)">Edit</button>
+        </div>
+        <div *ngIf="isSeeker">
+          <button mat-flat-button>Apply</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

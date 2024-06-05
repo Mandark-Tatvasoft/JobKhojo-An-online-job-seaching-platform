@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ifvLV0+GDsw1Lgps+UyLTnzNAOzGTss6zPL8b9G9cP3CnPc2NUIKrqrgZ/QaULpeSPlnLLXr6lG/Uh7cHe3E/Q==",
+  "dgSpecHash": "L54/JtlUcNYAnonP+fDtSjyNDSOTuZgKGJRBLXQJywCPuZboHXElzNGCjRXQI8fyk+cQccn5TK7nJZ2TYbbjAA==",
   "success": true,
-  "projectFilePath": "d:\\Projects\\JobKhojo\\Api\\Api.csproj",
+  "projectFilePath": "D:\\Projects\\JobKhojo\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pct46\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\pct46\\.nuget\\packages\\microsoft.aspnet.cors\\5.3.0\\microsoft.aspnet.cors.5.3.0.nupkg.sha512",

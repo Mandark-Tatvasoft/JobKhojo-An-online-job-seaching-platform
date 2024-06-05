@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Projects\\JobKhojo\\Data\\Data.csproj": {}
+    "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {}
   },
   "projects": {
-    "d:\\Projects\\JobKhojo\\Data\\Data.csproj": {
+    "D:\\Projects\\JobKhojo\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Projects\\JobKhojo\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "d:\\Projects\\JobKhojo\\Data\\Data.csproj",
+        "projectPath": "D:\\Projects\\JobKhojo\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\pct46\\.nuget\\packages\\",
-        "outputPath": "d:\\Projects\\JobKhojo\\Data\\obj\\",
+        "outputPath": "D:\\Projects\\JobKhojo\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pct46\\AppData\\Roaming\\NuGet\\NuGet.Config",

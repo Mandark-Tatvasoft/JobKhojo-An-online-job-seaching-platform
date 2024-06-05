@@ -13,7 +13,7 @@ import { Login } from '../../core/models/signin.model';
 import { User } from '../../core/models/user.model';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/login.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -64,6 +64,7 @@ export class LoginComponent {
         if (res.isSuccess) {
           this.user = res.data;
           localStorage.setItem('role', this.user.role.toString());
+          localStorage.setItem('userid', this.user.userId.toString());
           switch (res.data.role) {
             case '1':
               this.router.navigate(['admin']);

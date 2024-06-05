@@ -31,6 +31,10 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<Job>(entity =>
         {
             entity.HasKey(e => e.JobId).HasName("Jobs_pkey");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Jobs)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("CreatedBy_fkey");
         });
 
         modelBuilder.Entity<Role>(entity =>

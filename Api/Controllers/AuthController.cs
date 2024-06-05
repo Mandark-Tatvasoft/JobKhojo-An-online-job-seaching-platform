@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
             var user = _login.LogIn(model);
             if (user.UserId != null)
             {
+                Request.HttpContext.Session.SetInt32("userid", user.UserId);
                 var jwtToken = _jwt.GenerateToken(user);
                 Response.Cookies.Append("jwt", jwtToken);
 
@@ -53,21 +54,33 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Signup")]
+    
     public IActionResult Signup(SignupModel model)
     {
-        var res = new ResponseModel<string>();
-        var isAdded = _login.SignUp(model);
-        if (isAdded)
+        if (!ModelState.IsValid)
         {
-            res.IsSuccess = true;
-            res.Message = "User created Successfully";
-            return Ok(res);
+            var res = new ResponseModel<string>();
+            res.IsSuccess = false;
+            res.Message = "Validations not true";
+            res.Data = ModelState.ErrorCount.ToString();
+            return BadRequest(res);
         }
         else
         {
-            res.IsSuccess = false;
-            res.Message = "There is some mistake!";
-            return BadRequest(res);
+            var res = new ResponseModel<string>();
+            var isAdded = _login.SignUp(model);
+            if (isAdded)
+            {
+                res.IsSuccess = true;
+                res.Message = "User created Successfully";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There is some mistake!";
+                return BadRequest(res);
+            }
         }
     }
 

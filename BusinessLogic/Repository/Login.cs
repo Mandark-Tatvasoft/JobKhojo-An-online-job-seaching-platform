@@ -32,7 +32,7 @@ public class Login : ILogin
                 if (user != null)
                 {
                     loggedInUser.UserName = user.Username;
-                    loggedInUser.UserId = user.UserId.ToString();
+                    loggedInUser.UserId = user.UserId;
                     loggedInUser.Role = user.RoleId.ToString();
                     loggedInUser.Email = model.Email;
                     return loggedInUser;

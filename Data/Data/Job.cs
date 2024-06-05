@@ -28,4 +28,8 @@ public partial class Job
     public bool? IsActive { get; set; }
 
     public int[]? AppliedBy { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("Jobs")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
 }
