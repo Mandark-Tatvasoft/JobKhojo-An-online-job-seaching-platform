@@ -13,7 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Job } from '../../core/models/job.model';
-import { ToastrService } from 'ngx-toastr';
+import { spaceValidator } from '../../core/validators/whitespace.validator';
 
 @Component({
   selector: 'app-edit-job',
@@ -42,7 +42,6 @@ export class EditJobComponent {
     private route: ActivatedRoute,
     private service: RecruiterService,
     private fb: FormBuilder,
-    private toastr: ToastrService,
     private router: Router
   ) {
     this.initializeForm();
@@ -64,9 +63,9 @@ export class EditJobComponent {
 
   initializeForm() {
     this.editJobForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      openings: [0, Validators.required],
+      title: ['', [Validators.required, spaceValidator]],
+      description: ['', [Validators.required, spaceValidator]],
+      openings: [1, [Validators.required, Validators.min(1)]],
       isActive: [true],
     });
   }
@@ -88,9 +87,6 @@ export class EditJobComponent {
 
       this.service.editJob(this.job).subscribe((res) => {
         if (res.isSuccess) {
-          this.toastr.success(res.message, 'Success', {
-            timeOut: 2000,
-          });
           this.router.navigate(['recruiter']);
         }
       });

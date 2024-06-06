@@ -12,6 +12,45 @@ public class Jobs : IJobs
         _context = context;
     }
 
+    public List<JobModel> GetAllJobs()
+    {
+        var jobs = _context.Jobs.Where(j => j.IsActive == true).ToList();
+        var model = new List<JobModel>();
+
+        foreach (var job in jobs)
+        {
+            model.Add(new JobModel
+            {
+                JobId = job.JobId,
+                Title = job.Title,
+                Description = job.Description,
+                Openings = job.Openings
+            });
+        }
+
+        return model;
+
+    }
+
+    public List<JobModel> GetJobs(int limit)
+    {
+        var jobs = _context.Jobs.Where(j => j.IsActive == true).Take(limit).ToList();
+        var model = new List<JobModel>();
+
+        foreach (var job in jobs)
+        {
+            model.Add(new JobModel
+            {
+                JobId = job.JobId,
+                Title = job.Title,
+                Description = job.Description.Length > 50 ? job.Description.Substring(0, 50) + "..." : job.Description,
+                Openings = job.Openings
+            });
+        }
+
+        return model;
+    }
+
     public JobModel GetJob(int id)
     {
         var model = new JobModel();

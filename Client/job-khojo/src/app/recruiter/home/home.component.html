@@ -1,4 +1,9 @@
 <div class="container mt-5">
-  <h4 class="fw-medium">Jobs listed by you</h4>
+  <div class="d-flex justify-content-between">
+    <h4 class="fw-medium">Jobs listed by you</h4>
+    <a mat-flat-button routerLink="/recruiter/add-job"
+      ><mat-icon fontIcon="add"></mat-icon>Add</a
+    >
+  </div>
   <app-job-card *ngFor="let job of jobs" [Job]="job" />
 </div>

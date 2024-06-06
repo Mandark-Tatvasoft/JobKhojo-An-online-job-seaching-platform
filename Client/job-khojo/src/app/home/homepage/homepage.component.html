@@ -1,13 +1,36 @@
-<div class="home-container">
-  <div class="mt-5 title-wrapper d-flex align-items-center">
-    <div class="d-flex align-items-center justify-content-between main-content">
-      <div>
-        <h1 class="fw-bold" id="website-title-text">Welcome to JobKhojo</h1>
-        <p id="website-subtitle-text">
-          An online solution for finding your dream job!
-        </p>
-      </div>
-      <img src="../../../assets/images/square-logo.png" id="hero-img" />
+<div class="position-relative">
+  <div class="d-flex align-items-center" id="search-container">
+    <div class="d-flex flex-column justify-content-center">
+      <h1 class="fw-bold" id="website-title-text">Welcome to JobKhojo</h1>
+      <p id="website-subtitle-text">
+        An online solution for finding your dream job!
+      </p>
+      <mat-form-field appearance="outline">
+        <mat-label>Search for the job you want</mat-label>
+        <input type="search" matInput />
+      </mat-form-field>
+      <button
+        mat-flat-button
+        color="primary"
+        aria-label="Example icon button with a delete icon"
+        class="w-25"
+      >
+        <mat-icon>search</mat-icon>
+        Search
+      </button>
     </div>
   </div>
+  <div id="overlay-div" class="position-absolute"></div>
+  <img
+    src="../../../assets/images/title image.jpg"
+    class="title-img position-absolute"
+  />
+</div>
+<div class="container mt-5">
+  <h3 class="fw-bold">Recent Listings</h3>
+  <app-job-card
+    *ngFor="let job of jobs"
+    [Job]="job"
+    (click)="openJob(job.jobId)"
+  ></app-job-card>
 </div>

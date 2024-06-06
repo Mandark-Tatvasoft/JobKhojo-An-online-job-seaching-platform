@@ -12,6 +12,11 @@
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Firstname</mat-label>
               <input matInput name="firstname" formControlName="firstname" />
+              @if (signUpForm.get('firstname')?.hasError('required')) {
+              <mat-error>Firstname is required</mat-error>
+              } @if (signUpForm.get('firstname')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid firstname</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Lastname</mat-label>
@@ -19,11 +24,30 @@
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Email</mat-label>
-              <input matInput name="email" formControlName="email" />
+              <input
+                type="email"
+                matInput
+                name="email"
+                formControlName="email"
+              />
+              @if ((signUpForm.get('email')?.hasError('email') ||
+              signUpForm.get('email')?.hasError('pattern')) &&
+              !signUpForm.get('email')?.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (signUpForm.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Username</mat-label>
               <input matInput name="username" formControlName="username" />
+              @if (signUpForm.get('username')?.hasError('required')) {
+              <mat-error>Username is required</mat-error>
+              } @if (signUpForm.get('username')?.hasError('minlength')) {
+              <mat-error>Username should be minimum 3 characters</mat-error>
+              } @if (signUpForm.get('username')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid username</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Password</mat-label>
@@ -33,6 +57,17 @@
                 name="password"
                 formControlName="password"
               />
+              @if (signUpForm.get('password')?.hasError('required')) {
+              <mat-error>Password is required</mat-error>
+              } @if (signUpForm.get('password')?.hasError('pattern')&&
+              !signUpForm.get('password')?.hasError('minlength')) {
+              <mat-error
+                >The password must contain a number, a symbol and both capital
+                and small letters</mat-error
+              >
+              } @if (signUpForm.get('password')?.hasError('minlength')) {
+              <mat-error>Password should be atleast 8 characters</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Confirm Password</mat-label>
@@ -42,10 +77,28 @@
                 name="confirmPassword"
                 formControlName="confirmPassword"
               />
+              @if
+              (signUpForm.get('confirmPassword')?.hasError('passwordsDontMatch'))
+              {
+              <mat-error
+                >Password and confirmed password does not match</mat-error
+              >
+              } @if (signUpForm.get('confirmPassword')?.hasError('required')) {
+              <mat-error>Confirm password is required</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Mobile</mat-label>
-              <input matInput name="mobile" formControlName="mobile" />
+              <input
+                type="tel"
+                matInput
+                name="mobile"
+                formControlName="mobile"
+              />
+              @if (signUpForm.get('mobile')?.touched &&
+              signUpForm.get('mobile')?.hasError('pattern')) {
+              <mat-error>Enter a valid mobile number</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Role</mat-label>
@@ -54,6 +107,9 @@
                 <mat-option value="2">Recruiter</mat-option>
                 <mat-option value="3">Job-seeker</mat-option>
               </mat-select>
+              @if (signUpForm.get('role')?.hasError('required')) {
+              <mat-error>Please select a role</mat-error>
+              }
             </mat-form-field>
             <mat-form-field class="form-input col-md-6" *ngIf="role.value == 2">
               <mat-label>Company Name(For Recruiter)</mat-label>
@@ -62,6 +118,9 @@
                 name="companyName"
                 formControlName="companyName"
               />
+              @if (signUpForm.get('companyName')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid company name</mat-error>
+              }
             </mat-form-field>
             <div class="d-flex justify-content-center">
               <button type="submit" mat-flat-button>Sign up</button>

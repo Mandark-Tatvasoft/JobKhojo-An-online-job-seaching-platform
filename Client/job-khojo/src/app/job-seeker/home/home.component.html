@@ -1,3 +1,8 @@
-<div class="container d-flex justify-content-center mt-5">
-  <h3 class="fw-bold">Welcome to job listing</h3>
+<div class="container mt-5">
+  <h3 class="fw-bold">Job listings</h3>
+  <app-job-card
+    *ngFor="let job of jobs"
+    [Job]="job"
+    (click)="openJob(job.jobId)"
+  ></app-job-card>
 </div>

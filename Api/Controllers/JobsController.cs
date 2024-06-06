@@ -1,4 +1,3 @@
-using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,39 @@ public class JobsController : ControllerBase
     [HttpGet("GetAllJobs")]
     public IActionResult GetAll()
     {
-        return Ok("hi if authenticated!");
+        var res = new ResponseModel<List<JobModel>>();
+        var jobs = _jobs.GetAllJobs();
+        if(jobs == null)
+        {
+            res.IsSuccess = false;
+            res.Message = "No jobs found";
+            return NotFound(res);
+        }
+        else
+        {
+            res.IsSuccess = true;
+            res.Data = jobs;
+            return Ok(res);
+        }
+    }
+
+    [HttpGet("GetJobs")]
+    public IActionResult GetLimited(int limit)
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var jobs = _jobs.GetJobs(limit);
+        if (jobs == null)
+        {
+            res.IsSuccess = false;
+            res.Message = "No jobs found";
+            return NotFound(res);
+        }
+        else
+        {
+            res.IsSuccess = true;
+            res.Data = jobs;
+            return Ok(res);
+        }
     }
 
     [HttpGet("GetJob")]
@@ -43,17 +74,28 @@ public class JobsController : ControllerBase
     [HttpPut("EditJob")]
     public IActionResult Put(JobModel job)
     {
-        var isSuccess = _jobs.EditJob(job);
-        var res = new ResponseModel<string>()
+        var res = new ResponseModel<string>();
+        if(ModelState.IsValid)
         {
-            IsSuccess = false,
-            Message = "There were some errors editing the job"
-        };
-        if (isSuccess)
-        {
-            res.IsSuccess = true;
-            res.Message = "Job data chenged successfully";
+            var isSuccess = _jobs.EditJob(job);
+            if (isSuccess)
+            {
+                res.IsSuccess = true;
+                res.Message = "Job data changed successfully";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There were some errors editing the job";
+                return BadRequest(res);
+            }
         }
-        return Ok(res);
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "Please provide a proper format of data";
+            return BadRequest(res);
+        }
     }
 }

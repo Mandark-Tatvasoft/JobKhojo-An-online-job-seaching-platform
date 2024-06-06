@@ -18,6 +18,10 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Job> Jobs { get; set; }
 
+    public virtual DbSet<JobType> JobTypes { get; set; }
+
+    public virtual DbSet<Location> Locations { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -35,6 +39,20 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Jobs)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("CreatedBy_fkey");
+
+            entity.HasOne(d => d.JobTypeNavigation).WithMany(p => p.Jobs).HasConstraintName("JobType_fkey");
+
+            entity.HasOne(d => d.LocationNavigation).WithMany(p => p.Jobs).HasConstraintName("Location_fkey");
+        });
+
+        modelBuilder.Entity<JobType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("JobTypes_pkey");
+        });
+
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Locations_pkey");
         });
 
         modelBuilder.Entity<Role>(entity =>

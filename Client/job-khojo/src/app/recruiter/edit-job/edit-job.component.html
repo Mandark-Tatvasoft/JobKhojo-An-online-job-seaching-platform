@@ -9,12 +9,15 @@
       class="col-12"
     >
       <div class="d-flex justify-content-center mb-5">
-        <h3 class="fw-bold">Login</h3>
+        <h3 class="fw-bold">Edit job</h3>
       </div>
       <div class="row">
         <mat-form-field class="form-input mb-2 col-md-6">
           <mat-label>Title</mat-label>
           <input matInput name="title" formControlName="title" />
+          @if (editJobForm.get('title')?.hasError('required')) {
+          <mat-error>Title is required</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">
           <mat-label>Openings</mat-label>
@@ -24,6 +27,9 @@
             name="openings"
             formControlName="openings"
           />
+          @if (editJobForm.get('openings')?.hasError('min')) {
+          <mat-error>There should be atleast 1 opening</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-12">
           <mat-label>Description</mat-label>
@@ -47,8 +53,8 @@
           >
         </p>
 
-        <div class="d-flex justify-content-center">
-          <button type="submit" mat-flat-button>Sign in</button>
+        <div class="d-flex justify-content-end">
+          <button type="submit" mat-flat-button>Ok</button>
         </div>
       </div>
     </form>

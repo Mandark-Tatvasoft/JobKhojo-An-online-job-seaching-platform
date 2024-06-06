@@ -29,6 +29,6 @@ export class NavbarComponent {
   signOut() {
     localStorage.removeItem('role');
     this.isLoggedIn = false;
-    this.router.navigate(['login']);
+    this.router.navigate(['']);
   }
 }

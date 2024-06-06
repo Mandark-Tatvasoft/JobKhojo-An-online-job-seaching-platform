@@ -31,7 +31,7 @@ export class JobCardComponent {
     let role = localStorage.getItem('role');
     if (role == '2') {
       this.isRecruiter = true;
-    } else if (role == '3') {
+    } else if (role == '3' || role == null) {
       this.isSeeker = true;
     }
   }

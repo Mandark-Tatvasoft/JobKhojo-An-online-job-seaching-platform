@@ -38,18 +38,27 @@ public class RecruiterController : ControllerBase
     public IActionResult Post(JobModel model)
     {
         var res = new ResponseModel<string>();
-        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        var IsSuccess = _recruiter.AddJob(model, token);
-        if (IsSuccess)
+        if (ModelState.IsValid)
         {
-            res.IsSuccess = true;
-            res.Message = "Successfully added the Job listing";
-            return Ok(res);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var IsSuccess = _recruiter.AddJob(model, token);
+            if (IsSuccess)
+            {
+                res.IsSuccess = true;
+                res.Message = "Successfully added the Job listing";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There was some error";
+                return BadRequest(res);
+            }
         }
         else
         {
             res.IsSuccess = false;
-            res.Message = "Error while adding job";
+            res.Message = "Provide proper data";
             return BadRequest(res);
         }
     }

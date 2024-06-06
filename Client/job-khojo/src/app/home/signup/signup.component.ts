@@ -1,13 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +15,8 @@ import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Signup } from '../../core/models/signup.model';
+import { confirmPasswordValidator } from '../../core/validators/passwordmatch.validator';
+import { spaceValidator } from '../../core/validators/whitespace.validator';
 
 @Component({
   selector: 'app-signup',
@@ -63,18 +61,34 @@ export class SignupComponent {
 
   initializeForm() {
     this.signUpForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: [
+      email: [
         '',
-        [Validators.required, this.confirmPasswordValidator],
+        [
+          Validators.required,
+          Validators.pattern('^[\\w-]+@([\\w-]+.)+[\\w-]{2,4}$'),
+          Validators.email,
+        ],
       ],
-      firstname: ['', Validators.required],
+      username: [
+        '',
+        [Validators.required, Validators.minLength(3), spaceValidator],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(
+            '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{0,}$'
+          ),
+        ],
+      ],
+      confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
+      firstname: ['', Validators.required, spaceValidator],
       lastname: [''],
-      mobile: [''],
-      role: [0, Validators.required],
-      companyName: [''],
+      mobile: ['', Validators.pattern('[789]\\d{9}')],
+      role: [, Validators.required],
+      companyName: ['', spaceValidator],
     });
   }
   handleSubmit() {
@@ -98,22 +112,5 @@ export class SignupComponent {
         }
       });
     }
-  }
-
-  confirmPasswordValidator(control: FormControl): ValidationErrors | null {
-    if (!control.value) {
-      return null;
-    }
-
-    const passwordControl = control.root.get('password');
-    if (!passwordControl) {
-      return null;
-    }
-
-    if (control.value !== passwordControl.value) {
-      return { passwordsDontMatch: true };
-    }
-
-    return null;
   }
 }

@@ -29,7 +29,24 @@ public partial class Job
 
     public int[]? AppliedBy { get; set; }
 
+    public int? JobType { get; set; }
+
+    public int? Salary { get; set; }
+
+    public int? Location { get; set; }
+
+    [StringLength(50)]
+    public string? Subtitle { get; set; }
+
     [ForeignKey("CreatedBy")]
     [InverseProperty("Jobs")]
     public virtual User CreatedByNavigation { get; set; } = null!;
+
+    [ForeignKey("JobType")]
+    [InverseProperty("Jobs")]
+    public virtual JobType? JobTypeNavigation { get; set; }
+
+    [ForeignKey("Location")]
+    [InverseProperty("Jobs")]
+    public virtual Location? LocationNavigation { get; set; }
 }
