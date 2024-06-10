@@ -36,7 +36,7 @@ export class LoginComponent {
     userId: 0,
     role: 0,
     userName: '',
-    token: ''
+    token: '',
   };
 
   constructor(
@@ -64,20 +64,27 @@ export class LoginComponent {
       this.service.login(this.loginModel).subscribe((res) => {
         if (res.isSuccess) {
           this.user = res.data;
-          
+
           localStorage.setItem('role', this.user.role.toString());
           localStorage.setItem('userid', this.user.userId.toString());
           localStorage.setItem('jwtToken', this.user.token);
-          switch (res.data.role) {
-            case '1':
-              this.router.navigate(['admin']);
-              return;
-            case '2':
-              this.router.navigate(['recruiter']);
-              return;
-            case '3':
-              this.router.navigate(['job-seeker']);
-              return;
+
+          var path = localStorage.getItem('path');
+          if (path) {
+            localStorage.removeItem('path');
+            this.router.navigate([path.slice(1, path.length)]);
+          } else {
+            switch (res.data.role) {
+              case '1':
+                this.router.navigate(['admin']);
+                return;
+              case '2':
+                this.router.navigate(['recruiter']);
+                return;
+              case '3':
+                this.router.navigate(['job-seeker']);
+                return;
+            }
           }
         } else {
           this.toastr.error(res.message, '', {

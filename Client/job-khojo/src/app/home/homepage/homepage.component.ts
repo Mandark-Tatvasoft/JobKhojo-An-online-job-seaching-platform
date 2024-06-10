@@ -35,8 +35,4 @@ export class HomepageComponent {
       }
     });
   }
-
-  openJob(id: number) {
-    this.router.navigate(['job-details', id]);
-  }
 }

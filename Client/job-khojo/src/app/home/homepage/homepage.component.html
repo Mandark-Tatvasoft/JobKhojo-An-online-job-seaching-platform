@@ -28,9 +28,5 @@
 </div>
 <div class="container mt-5">
   <h3 class="fw-bold">Recent Listings</h3>
-  <app-job-card
-    *ngFor="let job of jobs"
-    [Job]="job"
-    (click)="openJob(job.jobId)"
-  ></app-job-card>
+  <app-job-card *ngFor="let job of jobs" [Job]="job"></app-job-card>
 </div>

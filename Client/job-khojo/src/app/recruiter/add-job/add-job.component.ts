@@ -1,4 +1,4 @@
-import { Component, Directive, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecruiterService } from '../services/recruiter.service';
 import { MatInputModule } from '@angular/material/input';
@@ -6,19 +6,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
-  AbstractControl,
-  AsyncValidatorFn,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Job } from '../../core/models/job.model';
-import { Observable } from 'rxjs';
 import { spaceValidator } from '../../core/validators/whitespace.validator';
+import { Location } from '../../core/models/location.model';
+import { MatSelectModule } from '@angular/material/select';
+import { JobType } from '../../core/models/job-type.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-job',
@@ -29,6 +28,8 @@ import { spaceValidator } from '../../core/validators/whitespace.validator';
     MatButtonModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
+    MatSelectModule,
+    CommonModule,
   ],
   templateUrl: './add-job.component.html',
   styleUrl: './add-job.component.css',
@@ -36,19 +37,30 @@ import { spaceValidator } from '../../core/validators/whitespace.validator';
 export class AddJobComponent {
   addJobForm!: FormGroup<{
     title: FormControl<string | null>;
+    subtitle: FormControl<string | null>;
     description: FormControl<string | null>;
     openings: FormControl<number | null>;
+    salary: FormControl<number | null>;
+    jobType: FormControl<number | null>;
+    location: FormControl<number | null>;
     isActive: FormControl<boolean | null>;
   }>;
   job: Job = {
     jobId: 0,
     title: '',
+    subtitle: '',
     description: '',
     openings: 0,
+    salary: 0,
+    location: 0,
+    jobType: 0,
     createdBy: 0,
     isActive: false,
     appliedBy: 0,
   };
+
+  jobTypes: JobType[] = [];
+  locations: Location[] = [];
 
   constructor(
     private service: RecruiterService,
@@ -58,11 +70,29 @@ export class AddJobComponent {
     this.initializeForm();
   }
 
+  ngOnInit() {
+    this.service.getJobTypes().subscribe((res) => {
+      if (res.isSuccess) {
+        this.jobTypes = res.data;
+      }
+    });
+
+    this.service.getLocations().subscribe((res) => {
+      if (res.isSuccess) {
+        this.locations = res.data;
+      }
+    });
+  }
+
   initializeForm() {
     this.addJobForm = this.fb.group({
       title: ['', [Validators.required, spaceValidator]],
+      subtitle: ['', [Validators.required, spaceValidator]],
       description: ['', [Validators.required, spaceValidator]],
       openings: [1, [Validators.required, Validators.min(1)]],
+      salary: [0, [Validators.required, Validators.min(1)]],
+      jobType: [0, [Validators.required, Validators.min(1)]],
+      location: [0, [Validators.required, Validators.min(1)]],
       isActive: [true],
     });
   }
@@ -81,7 +111,18 @@ export class AddJobComponent {
       this.job.isActive = this.addJobForm.value.isActive
         ? this.addJobForm.value.isActive
         : true;
-      console.log(this.job);
+      this.job.location = this.addJobForm.value.location
+        ? this.addJobForm.value.location
+        : 0;
+      this.job.jobType = this.addJobForm.value.jobType
+        ? this.addJobForm.value.jobType
+        : 0;
+      this.job.salary = this.addJobForm.value.salary
+        ? this.addJobForm.value.salary
+        : 0;
+      this.job.subtitle = this.addJobForm.value.subtitle
+        ? this.addJobForm.value.subtitle
+        : '';
 
       this.service.addJob(this.job).subscribe((res) => {
         if (res.isSuccess) {

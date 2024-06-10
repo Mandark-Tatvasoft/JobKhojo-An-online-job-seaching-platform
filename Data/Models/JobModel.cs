@@ -10,11 +10,19 @@ public class JobModel
     [Required(ErrorMessage = "Title is required"), WhiteSpaceValidator]
     public string Title { get; set; }
 
+    public string Subtitle { get; set; }
+
     [Required(ErrorMessage = "Description is required"), WhiteSpaceValidator]
     public string Description { get; set; }
 
     [Required(ErrorMessage = "No. of Openings are required"), WhiteSpaceValidator]
     public int? Openings { get; set; }
+
+    public int? Salary { get; set; }
+
+    public int? JobType { get; set; }
+
+    public int? Location { get; set; }
 
     public int CreatedBy { get; set; }
 

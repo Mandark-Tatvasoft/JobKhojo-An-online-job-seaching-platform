@@ -1,0 +1,80 @@
+<div
+  class="container mt-5 d-flex justify-content-center align-items-center login-container"
+>
+  <div>
+    <mat-card>
+      <mat-card-content class="p-5">
+        <form
+          id="sigInForm"
+          [formGroup]="profileForm"
+          (submit)="handleSubmit()"
+          enctype="multipart/form-data"
+        >
+          <div class="d-flex justify-content-center mb-5">
+            <h3 class="fw-bold">Profile</h3>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Firstname</mat-label>
+              <input matInput name="firstname" formControlName="firstname" />
+              @if (profileForm.get('firstname')?.hasError('required')) {
+              <mat-error>Firstname is required</mat-error>
+              } @if (profileForm.get('firstname')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid firstname</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Lastname</mat-label>
+              <input matInput name="lastname" formControlName="lastname" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Email</mat-label>
+              <input
+                type="email"
+                matInput
+                name="email"
+                formControlName="email"
+              />
+              @if ((profileForm.get('email')?.hasError('email') ||
+              profileForm.get('email')?.hasError('pattern')) &&
+              !profileForm.get('email')?.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (profileForm.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Username</mat-label>
+              <input matInput name="username" formControlName="username" />
+              @if (profileForm.get('username')?.hasError('required')) {
+              <mat-error>Username is required</mat-error>
+              } @if (profileForm.get('username')?.hasError('minlength')) {
+              <mat-error>Username should be minimum 3 characters</mat-error>
+              } @if (profileForm.get('username')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid username</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Mobile</mat-label>
+              <input
+                type="tel"
+                matInput
+                name="mobile"
+                formControlName="mobile"
+              />
+              @if (profileForm.get('mobile')?.touched &&
+              profileForm.get('mobile')?.hasError('pattern')) {
+              <mat-error>Enter a valid mobile number</mat-error>
+              }
+            </mat-form-field>
+            <label>Resume</label>
+            <input type="file" name="resume" formControlName="resume" />
+            <div class="d-flex justify-content-center">
+              <button type="submit" mat-flat-button>Submit</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

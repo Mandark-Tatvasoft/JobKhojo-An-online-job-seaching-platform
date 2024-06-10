@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class JobsComponent {
   jobs: Job[] = [];
 
-  constructor(private service: HomeService, private router: Router) {}
+  constructor(private service: HomeService) {}
 
   ngOnInit(): void {
     this.service.getJobs().subscribe((res) => {
@@ -23,9 +23,5 @@ export class JobsComponent {
         this.jobs = res.data;
       }
     });
-  }
-
-  openJob(id: number) {
-    this.router.navigate(['job-details', id]);
   }
 }

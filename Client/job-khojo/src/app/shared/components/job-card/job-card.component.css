@@ -1,3 +1,12 @@
 .openings {
   font-size: 13px;
 }
+.like-btn {
+  top: 10px;
+  right: 20px;
+}
+.card {
+  background-color: #eeeeee;
+  box-shadow: none;
+  border: 1px solid #c2c2c2;
+}

@@ -11,9 +11,8 @@ public partial class JobType
     [Key]
     public int Id { get; set; }
 
-    [Column("JobType")]
-    [MaxLength(1)]
-    public char? JobType1 { get; set; }
+    [Column("JobType", TypeName = "character varying")]
+    public string? JobType1 { get; set; }
 
     [InverseProperty("JobTypeNavigation")]
     public virtual ICollection<Job> Jobs { get; set; } = new List<Job>();

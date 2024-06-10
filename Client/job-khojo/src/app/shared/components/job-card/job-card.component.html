@@ -1,12 +1,35 @@
-<mat-card class="mb-3">
-  <mat-card-content>
+<mat-card class="mb-3 position-relative card p-3">
+  <div *ngIf="isSeeker" class="position-absolute like-btn">
+    <button mat-icon-button (click)="saveJob(Job.jobId)">
+      <mat-icon>bookmark_outline</mat-icon>
+    </button>
+  </div>
+  <mat-card-content (click)="openJob(Job.jobId)">
     <div class="d-flex justify-content-between">
       <div>
         <h6 class="fs-5 fw-medium">{{ Job.title }}</h6>
         <div class="p-2">
-          <p class="fs-6 mb-1">{{ Job.description }}</p>
-          <div class="openings">
-            Openings: <strong>{{ Job.openings }}</strong>
+          <p class="fs-6 mb-4">{{ Job.subtitle }}</p>
+          <div class="d-flex align-items-center mb-2">
+            <div class="openings d-flex align-items-center ms-2 me-3">
+              <mat-icon class="me-2">group</mat-icon
+              ><strong>{{ Job.openings }}</strong>
+            </div>
+            |
+            <div class="d-flex align-items-center ms-xxl-2 me-2">
+              <mat-icon class="me-2">currency_rupee</mat-icon
+              ><strong>{{ Job.salary }}</strong>
+            </div>
+            |
+            <div class="d-flex align-items-center ms-2 me-3">
+              <mat-icon class="me-2">laptop</mat-icon
+              ><strong>{{ getJobType(Job.jobType) }}</strong>
+            </div>
+            |
+            <div class="d-flex align-items-center ms-2 me-3">
+              <mat-icon class="me-2">place</mat-icon
+              ><strong>{{ getLocation(Job.location) }}</strong>
+            </div>
           </div>
           <div class="openings mb-0" *ngIf="isRecruiter">
             No. of Applicants: <strong>{{ Job.appliedBy }}</strong>
@@ -16,9 +39,6 @@
       <div class="d-flex align-items-center">
         <div *ngIf="isRecruiter">
           <button mat-flat-button (click)="editJob(Job.jobId)">Edit</button>
-        </div>
-        <div *ngIf="isSeeker">
-          <button mat-flat-button>Apply</button>
         </div>
       </div>
     </div>

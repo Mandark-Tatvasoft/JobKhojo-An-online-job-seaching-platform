@@ -98,4 +98,46 @@ public class JobsController : ControllerBase
             return BadRequest(res);
         }
     }
+
+    [HttpPut("ApplyForJob")]
+    public IActionResult Apply(int jobId)
+    {
+        var res = new ResponseModel<string>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(' ').Last();
+        var isSuccess = _jobs.ApplyForJob(jobId, token);
+
+        if (isSuccess)
+        {
+            res.IsSuccess = true;
+            res.Message = "Applied for the job";
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "Something went wrong";
+            return BadRequest(res);
+        }
+    }
+
+    [HttpPut("SaveJob")]
+    public IActionResult SaveJob(int jobId)
+    {
+        var res = new ResponseModel<string>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(' ').Last();
+        var isSuccess = _jobs.SaveJob(jobId, token);
+
+        if (isSuccess)
+        {
+            res.IsSuccess = true;
+            res.Message = "Saved the job";
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "Something went wrong";
+            return BadRequest(res);
+        }
+    }
 }

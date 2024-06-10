@@ -10,6 +10,12 @@
     />
     <div>
       <a mat-button class="fs-6 m-2" routerLink="/jobs">Jobs</a>
+      <a mat-button class="fs-6 m-2" *ngIf="isLoggedIn && isSeeker"
+        >Saved Jobs</a
+      >
+      <a mat-button class="fs-6 m-2" *ngIf="isLoggedIn" routerLink="/profile"
+        >Profile</a
+      >
       <a mat-button class="fs-6 m-2" routerLink="/login" *ngIf="!isLoggedIn"
         >Login</a
       >
@@ -27,7 +33,7 @@
         (click)="signOut()"
         *ngIf="isLoggedIn"
       >
-        Sign out
+        Logout
       </button>
     </div>
   </div>

@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
   isLoggedIn: boolean = false;
+  isSeeker: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -23,11 +24,18 @@ export class NavbarComponent {
     let role = localStorage.getItem('role');
     if (role) {
       this.isLoggedIn = true;
+      if (role == '3') {
+        this.isSeeker = true;
+      } else {
+        this.isSeeker = false;
+      }
     }
   }
 
   signOut() {
     localStorage.removeItem('role');
+    localStorage.removeItem('userid');
+    localStorage.removeItem('jwtToken');
     this.isLoggedIn = false;
     this.router.navigate(['']);
   }

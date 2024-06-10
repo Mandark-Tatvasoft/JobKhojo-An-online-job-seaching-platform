@@ -6,7 +6,6 @@ using Data.Data;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogic.Repository;
@@ -72,7 +71,9 @@ public class Login : ILogin
                 Mobile = model.Mobile,
                 RoleId = model.Role,
                 CompanyName = model.CompanyName,
-                Resume = model.Resume
+                Resume = model.Resume,
+                AppliedJobs = new int[0],
+                SavedJobs = new int[0],
             };
 
             try

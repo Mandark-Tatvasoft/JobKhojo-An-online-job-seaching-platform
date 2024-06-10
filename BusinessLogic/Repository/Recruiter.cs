@@ -10,12 +10,10 @@ namespace BusinessLogic.Repository;
 public class Recruiter : IRecruiter
 {
     private readonly AppDbContext _context;
-    private readonly IHttpContextAccessor _http;
     private readonly IJwtService _jwt;
-    public Recruiter(AppDbContext context, IHttpContextAccessor http, IJwtService jwt)
+    public Recruiter(AppDbContext context, IJwtService jwt)
     {
         _context = context;
-        _http = http;
         _jwt = jwt;
     }
     public List<JobModel> GetAllListed(int id)
@@ -32,6 +30,10 @@ public class Recruiter : IRecruiter
                     Title = job.Title,
                     Description = job.Description,
                     Openings = job.Openings,
+                    Salary = job.Salary,
+                    Location = job.Location,
+                    Subtitle = job.Subtitle,
+                    JobType = job.JobType,
                     CreatedBy = job.CreatedBy,
                     IsActive = job.IsActive,
                     AppliedBy = job.AppliedBy == null ? 0 : job.AppliedBy.Count(),
@@ -52,8 +54,13 @@ public class Recruiter : IRecruiter
         var newJob = new Job()
         {
             Title = job.Title,
+            Subtitle = job.Subtitle,
+            Location = job.Location,
+            Salary = job.Salary,
+            JobType = job.JobType,
             Description = job.Description,
             CreatedBy = int.Parse(validatedToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value),
+            AppliedBy = new int[0],
             IsActive = true,
             Openings = job.Openings
         };

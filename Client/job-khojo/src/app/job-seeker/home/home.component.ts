@@ -24,8 +24,4 @@ export class HomeComponent {
       }
     });
   }
-
-  openJob(id: number) {
-    this.router.navigate(['job-seeker/job-details', id]);
-  }
 }

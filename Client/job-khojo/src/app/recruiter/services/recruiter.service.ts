@@ -10,6 +10,8 @@ export class RecruiterService {
   getJobUrl = 'https://localhost:7083/Jobs/GetJob?id=';
   editJobUrl = 'https://localhost:7083/Jobs/EditJob';
   addJobUrl = 'https://localhost:7083/Recruiter/AddJob';
+  getLocationsUrl = 'https://localhost:7083/Locations/GetAllLocations';
+  getJobTypesUrl = 'https://localhost:7083/JobTypes/GetAllJobTypes';
 
   constructor(private api: ApiService) {}
 
@@ -27,5 +29,13 @@ export class RecruiterService {
 
   addJob(model: Job) {
     return this.api.post(this.addJobUrl, model);
+  }
+
+  getLocations() {
+    return this.api.get(this.getLocationsUrl);
+  }
+
+  getJobTypes() {
+    return this.api.get(this.getJobTypesUrl);
   }
 }

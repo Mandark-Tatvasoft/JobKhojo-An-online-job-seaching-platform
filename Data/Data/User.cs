@@ -37,6 +37,10 @@ public partial class User
     [Column(TypeName = "character varying")]
     public string? Mobile { get; set; }
 
+    public int[]? AppliedJobs { get; set; }
+
+    public int[]? SavedJobs { get; set; }
+
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Job> Jobs { get; set; } = new List<Job>();
 

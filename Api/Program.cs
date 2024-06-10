@@ -1,7 +1,6 @@
 using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
-using Data.Data;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,15 +16,11 @@ builder.Services.AddScoped<ILogin, Login>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IRecruiter, Recruiter>();
 builder.Services.AddScoped<IJobs, Jobs>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IJobTypes, JobTypes>();
+builder.Services.AddScoped<ILocations, Locations>();
+builder.Services.AddScoped<IUsers, Users>();
 builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -48,7 +43,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseSession();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
