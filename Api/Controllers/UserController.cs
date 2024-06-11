@@ -16,6 +16,25 @@ namespace Api.Controllers
             _user = user;
         }
 
+        [HttpGet("GetAllUsers")]
+        public IActionResult GetAll() 
+        {
+            var res = new ResponseModel<List<ProfileModel>>();
+            var data = _user.GetUsers();
+            if(data.Count > 0)
+            {
+                res.IsSuccess = true;
+                res.Data = data;
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "No users found";
+                return NotFound(res);
+            }
+        }
+
         [HttpGet("GetUser")]
         public IActionResult Get()
         {
@@ -23,6 +42,25 @@ namespace Api.Controllers
             var res = new ResponseModel<ProfileModel>();
             var data = _user.GetUser(token);
             if (data.UserId != 0)
+            {
+                res.IsSuccess = true;
+                res.Data = data;
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "No user found";
+                return NotFound(res);
+            }
+        }
+
+        [HttpGet("GetUserById")]
+        public IActionResult GetUser(int id)
+        {
+            var res = new ResponseModel<SignupModel>();
+            var data = _user.GetUserById(id);
+            if (data.Role != 0)
             {
                 res.IsSuccess = true;
                 res.Data = data;

@@ -109,6 +109,8 @@
               </mat-select>
               @if (signUpForm.get('role')?.hasError('required')) {
               <mat-error>Please select a role</mat-error>
+              } @if (signUpForm.get('role')?.hasError('min')) {
+              <mat-error>Please select a role</mat-error>
               }
             </mat-form-field>
             <mat-form-field class="form-input col-md-6" *ngIf="role.value == 2">

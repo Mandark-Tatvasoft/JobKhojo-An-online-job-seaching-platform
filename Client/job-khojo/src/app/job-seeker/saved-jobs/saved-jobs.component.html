@@ -1,0 +1,10 @@
+<div class="container mt-5">
+  <h3 class="fw-bold">Your saved jobs</h3>
+  <div class="p-3">
+    <app-job-card
+      [isSavedJobPage]="true"
+      *ngFor="let job of savedJobs"
+      [Job]="job"
+    ></app-job-card>
+  </div>
+</div>

@@ -9,9 +9,43 @@
       routerLink="/"
     />
     <div>
-      <a mat-button class="fs-6 m-2" routerLink="/jobs">Jobs</a>
-      <a mat-button class="fs-6 m-2" *ngIf="isLoggedIn && isSeeker"
+      <a mat-button class="fs-6 m-2" routerLink="/jobs" *ngIf="!isAdmin"
+        >Jobs</a
+      >
+      <a
+        mat-button
+        class="fs-6 m-2"
+        *ngIf="isLoggedIn && isSeeker"
+        routerLink="/job-seeker/saved-jobs"
         >Saved Jobs</a
+      >
+      <a
+        mat-button
+        class="fs-6 m-2"
+        *ngIf="isLoggedIn && isSeeker"
+        routerLink="/job-seeker/applied-jobs"
+        >Applied Jobs</a
+      >
+      <a
+        mat-button
+        class="fs-6 m-2"
+        *ngIf="isLoggedIn && isAdmin"
+        routerLink="/admin/jobs"
+        >Jobs</a
+      >
+      <a
+        mat-button
+        class="fs-6 m-2"
+        *ngIf="isLoggedIn && isAdmin"
+        routerLink="/admin/users"
+        >Users</a
+      >
+      <a
+        mat-button
+        class="fs-6 m-2"
+        *ngIf="isLoggedIn && isAdmin"
+        routerLink="/admin/locations"
+        >Locations</a
       >
       <a mat-button class="fs-6 m-2" *ngIf="isLoggedIn" routerLink="/profile"
         >Profile</a

@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Signup } from '../../core/models/signup.model';
+import { NewUser } from '../../core/models/signup.model';
 import { confirmPasswordValidator } from '../../core/validators/passwordmatch.validator';
 import { spaceValidator } from '../../core/validators/whitespace.validator';
 
@@ -35,7 +35,7 @@ import { spaceValidator } from '../../core/validators/whitespace.validator';
 })
 export class SignupComponent {
   signUpForm!: FormGroup;
-  model: Signup = {
+  model: NewUser = {
     firstname: '',
     lastname: '',
     email: '',
@@ -84,13 +84,14 @@ export class SignupComponent {
         ],
       ],
       confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
-      firstname: ['', Validators.required, spaceValidator],
+      firstname: ['', [Validators.required, spaceValidator]],
       lastname: [''],
       mobile: ['', Validators.pattern('[789]\\d{9}')],
-      role: [, Validators.required],
+      role: [0, [Validators.required, Validators.min(1)]],
       companyName: ['', spaceValidator],
     });
   }
+
   handleSubmit() {
     if (this.signUpForm.valid) {
       this.model.firstname = this.signUpForm.value.firstname;

@@ -30,6 +30,7 @@ export class JobCardComponent {
     isActive: true,
     appliedBy: 0,
   };
+  @Input() isSavedJobPage: boolean = false;
   isRecruiter: boolean = false;
   isSeeker: boolean = true;
   jobTypes: JobType[] = [];
@@ -79,8 +80,8 @@ export class JobCardComponent {
   }
 
   saveJob(jobId: number) {
-    if (localStorage.getItem('userId')) {
-      console.log('hi');
+    if (localStorage.getItem('userid')) {
+      this.service.saveJob(jobId).subscribe();
     } else {
       this.router.navigate(['login']);
     }

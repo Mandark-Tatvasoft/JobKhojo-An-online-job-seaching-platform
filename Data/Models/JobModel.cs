@@ -29,4 +29,6 @@ public class JobModel
     public bool? IsActive { get; set; }
 
     public int AppliedBy { get; set; }
+
+    public bool isApplied { get; set; }
 }

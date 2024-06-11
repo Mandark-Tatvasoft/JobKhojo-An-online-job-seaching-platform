@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="fw-bold">Users</h3>
+    <button mat-flat-button (click)="addUser()">Add User</button>
+  </div>
+  <div class="p-3">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>User Id</th>
+          <th>Username</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Mobile no.</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.userId }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.firstname }}</td>
+          <td>{{ user.lastname }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.mobile }}</td>
+          <td class="text-end">
+            <button mat-flat-button (click)="editUser(user.userId)">
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

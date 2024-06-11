@@ -8,11 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { JobType } from '../../core/models/job-type.model';
 import { Location } from '../../core/models/location.model';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, CommonModule],
   templateUrl: './job-details.component.html',
   styleUrl: './job-details.component.css',
 })
@@ -33,6 +34,7 @@ export class JobDetailsComponent {
   };
   jobTypes: JobType[] = [];
   locations: Location[] = [];
+  isApplied: boolean = false;
 
   constructor(
     private service: HomeService,
@@ -46,6 +48,7 @@ export class JobDetailsComponent {
     this.service.getJobById(this.id).subscribe((res) => {
       if (res.isSuccess) {
         this.job = res.data;
+        this.isApplied = res.data.isApplied;
       }
     });
 

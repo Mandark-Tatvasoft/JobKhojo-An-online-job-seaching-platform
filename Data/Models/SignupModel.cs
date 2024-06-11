@@ -9,26 +9,26 @@ public class SignupModel
     public string Firstname { get; set; }
 
     [Required(ErrorMessage = "Lastname is required"), WhiteSpaceValidator]
-    public string Lastname { get; set; }
+    public string? Lastname { get; set; }
 
     [Required(ErrorMessage = "Email is required"), WhiteSpaceValidator]
     public string Email { get; set; }
 
-    public string Mobile { get; set; }
+    public string? Mobile { get; set; }
 
     [Required(ErrorMessage = "Username is required"), WhiteSpaceValidator]
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
     [Required(ErrorMessage = "Password is required"), WhiteSpaceValidator]
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     [Required(ErrorMessage = "Confirm password is required"), WhiteSpaceValidator, Compare("Password", ErrorMessage = "Password and confirm password do not match")]
-    public string ConfirmPassword { get; set; }
+    public string? ConfirmPassword { get; set; }
 
     [Required(ErrorMessage = "Role is required")]
-    public int Role { get; set; }
+    public int? Role { get; set; }
 
-    public string CompanyName { get; set; }
+    public string? CompanyName { get; set; }
 
-    public string Resume { get; set; }
+    public string? Resume { get; set; }
 }

@@ -8,11 +8,15 @@ public interface IJobs
 
     public List<JobModel> GetJobs(int limit);
 
-    public JobModel GetJob(int id);
+    public JobModel GetJob(int id, string token);
 
     public bool EditJob(JobModel model);
 
     public bool ApplyForJob(int jobId, string token);
 
     public bool SaveJob(int jobId, string token);
+
+    public List<JobModel> GetSavedJobs(string token);
+
+    public List<JobModel> GetAppliedJobs(string token);
 }

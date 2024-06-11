@@ -64,7 +64,77 @@ public class Jobs : IJobs
         return model;
     }
 
-    public JobModel GetJob(int id)
+    public List<JobModel> GetSavedJobs(string token)
+    {
+        var model = new List<JobModel>();
+        _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+        if(jwtToken != null)
+        {
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            var savedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs;
+            if(savedJobs != null)
+            {
+                var jobs = _context.Jobs.Where(j => savedJobs.Contains(j.JobId)).ToList();
+                if(jobs != null)
+                {
+                    foreach (var job in jobs)
+                    {
+                        model.Add(new JobModel
+                        {
+                            JobId = job.JobId,
+                            Title = job.Title,
+                            Description = job.Description,
+                            Openings = job.Openings,
+                            Salary = job.Salary,
+                            Location = job.Location,
+                            JobType = job.JobType,
+                            Subtitle = job.Subtitle,
+                            IsActive = job.IsActive,
+                        });
+                    }
+                }
+
+            }
+        }
+        return model;
+    }
+
+    public List<JobModel> GetAppliedJobs(string token)
+    {
+        var model = new List<JobModel>();
+        _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+        if (jwtToken != null)
+        {
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            var appliedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).AppliedJobs;
+            if (appliedJobs != null)
+            {
+                var jobs = _context.Jobs.Where(j => appliedJobs.Contains(j.JobId)).ToList();
+                if (jobs != null)
+                {
+                    foreach (var job in jobs)
+                    {
+                        model.Add(new JobModel
+                        {
+                            JobId = job.JobId,
+                            Title = job.Title,
+                            Description = job.Description,
+                            Openings = job.Openings,
+                            Salary = job.Salary,
+                            Location = job.Location,
+                            JobType = job.JobType,
+                            Subtitle = job.Subtitle,
+                            IsActive = job.IsActive,
+                        });
+                    }
+                }
+
+            }
+        }
+        return model;
+    }
+
+    public JobModel GetJob(int id, string token)
     {
         var model = new JobModel();
         var job = _context.Jobs.FirstOrDefault(x => x.JobId == id);
@@ -76,11 +146,29 @@ public class Jobs : IJobs
             model.Subtitle = job.Subtitle;
             model.Description = job.Description;
             model.Openings = job.Openings;
+            model.CreatedBy = job.CreatedBy;
             model.Salary = job.Salary;
             model.Location = job.Location;
             model.JobType = job.JobType;
             model.IsActive = job.IsActive;
             model.Openings = job.Openings;
+        }
+
+        if (token != null)
+        {
+            _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+            if(jwtToken != null)
+            {
+                var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+                var savedJobs = _context.Users.FirstOrDefault(x => x.UserId == userId).AppliedJobs;
+                if (savedJobs != null)
+                {
+                    if (savedJobs.Contains(job.JobId))
+                    {
+                        model.isApplied = true;
+                    }
+                }
+            }
         }
 
         return model;
@@ -167,26 +255,34 @@ public class Jobs : IJobs
     public bool SaveJob(int jobId, string token)
     {
         _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
-        var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
-        var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-        if(user != null)
+        if(jwtToken != null)
         {
-            List<int> savedJobs = new List<int>();
-            foreach(var item in user.SavedJobs)
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user != null)
             {
-                savedJobs.Add(item);
-            }
-            savedJobs.Add(jobId);
+                List<int> savedJobs = new List<int>();
+                foreach (var item in user.SavedJobs)
+                {
+                    savedJobs.Add(item);
+                }
+                savedJobs.Add(jobId);
+                user.SavedJobs = savedJobs.ToArray();
 
-            try
-            {
-                _context.SaveChanges();
-                return true;
-            }
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
 
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else
             {
-                Console.WriteLine(ex.Message);
                 return false;
             }
         }

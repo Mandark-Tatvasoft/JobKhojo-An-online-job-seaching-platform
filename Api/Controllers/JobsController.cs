@@ -53,11 +53,52 @@ public class JobsController : ControllerBase
         }
     }
 
+    [HttpGet("GetSavedJobs")]
+    public IActionResult GetSaved()
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetSavedJobs(token);
+        if(data.Count != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "No saved Jobs found";
+            return Ok(res);
+        }
+    }
+
+    [HttpGet("GetAppliedJobs")]
+    public IActionResult GetApplied()
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetAppliedJobs(token);
+        if (data.Count != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "No saved Jobs found";
+            return Ok(res);
+        }
+    }
+
     [HttpGet("GetJob")]
     public IActionResult Get(int id)
     {
         var res = new ResponseModel<JobModel>();
-        var job = _jobs.GetJob(id);
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var job = _jobs.GetJob(id, token);
         if (job == null)
         {
             res.IsSuccess = false;

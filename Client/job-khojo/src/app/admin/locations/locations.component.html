@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="fw-bold">Locations</h3>
+    <button mat-flat-button (click)="addLocation()">Add Location</button>
+  </div>
+  <div class="p-3">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>User Id</th>
+          <th>Username</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loc of locations">
+          <td>{{ loc.locationId }}</td>
+          <td>{{ loc.locationName }}</td>
+          <td class="text-end">
+            <button mat-flat-button (click)="editLocation(loc.locationId)">
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="fw-bold mb-0">Jobs</h3>
+    <button mat-flat-button (click)="addJob()">Add Job</button>
+  </div>
+  <div class="p-3">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Job Id</th>
+          <th>Title</th>
+          <th>Location</th>
+          <th>Openings</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of jobs">
+          <td>{{ job.jobId }}</td>
+          <td>{{ job.title }}</td>
+          <td>{{ getLocation(job.location) }}</td>
+          <td>{{ job.openings }}</td>
+          <td class="text-end">
+            <button mat-flat-button (click)="editJob(job.jobId)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

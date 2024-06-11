@@ -94,4 +94,8 @@ export class LoginComponent {
       });
     }
   }
+
+  ngOnDestroy() {
+    localStorage.removeItem('path');
+  }
 }

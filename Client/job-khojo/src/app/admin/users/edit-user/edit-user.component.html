@@ -1,0 +1,89 @@
+<div
+  class="container mt-5 d-flex justify-content-center align-items-center login-container"
+>
+  <div>
+    <mat-card>
+      <mat-card-content class="p-5">
+        <form id="sigInForm" [formGroup]="userForm" (submit)="handleSubmit()">
+          <div class="d-flex justify-content-center mb-5">
+            <h3 class="fw-bold">Edit user</h3>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Firstname</mat-label>
+              <input matInput name="firstname" formControlName="firstname" />
+              @if (userForm.get('firstname')?.hasError('required')) {
+              <mat-error>Firstname is required</mat-error>
+              } @if (userForm.get('firstname')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid firstname</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Lastname</mat-label>
+              <input matInput name="lastname" formControlName="lastname" />
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Email</mat-label>
+              <input
+                type="email"
+                matInput
+                name="email"
+                formControlName="email"
+              />
+              @if ((userForm.get('email')?.hasError('email') ||
+              userForm.get('email')?.hasError('pattern')) &&
+              !userForm.get('email')?.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (userForm.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Mobile</mat-label>
+              <input
+                type="tel"
+                matInput
+                name="mobile"
+                formControlName="mobile"
+              />
+              @if (userForm.get('mobile')?.touched &&
+              userForm.get('mobile')?.hasError('pattern')) {
+              <mat-error>Enter a valid mobile number</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input mb-2 col-md-6">
+              <mat-label>Role</mat-label>
+              <mat-select name="role" formControlName="role" #role>
+                <mat-option value="1">Admin</mat-option>
+                <mat-option value="2">Recruiter</mat-option>
+                <mat-option value="3">Job-seeker</mat-option>
+              </mat-select>
+              @if (userForm.get('role')?.hasError('required')) {
+              <mat-error>Please select a role</mat-error>
+              } @if (userForm.get('role')?.hasError('min')) {
+              <mat-error>Please select a role</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field
+              class="form-input mb-2 col-md-6"
+              *ngIf="role.value == 2"
+            >
+              <mat-label>Company Name(For Recruiter)</mat-label>
+              <input
+                matInput
+                name="companyName"
+                formControlName="companyName"
+              />
+              @if (userForm.get('companyName')?.hasError('whitespace')) {
+              <mat-error>White space is not a valid company name</mat-error>
+              }
+            </mat-form-field>
+            <div class="d-flex justify-content-center">
+              <button type="submit" mat-flat-button>Submit</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

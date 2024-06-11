@@ -13,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 export class NavbarComponent {
   isLoggedIn: boolean = false;
   isSeeker: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -26,8 +27,13 @@ export class NavbarComponent {
       this.isLoggedIn = true;
       if (role == '3') {
         this.isSeeker = true;
+        this.isAdmin = false;
+      } else if (role == '1') {
+        this.isSeeker = false;
+        this.isAdmin = true;
       } else {
         this.isSeeker = false;
+        this.isAdmin = false;
       }
     }
   }
@@ -37,6 +43,6 @@ export class NavbarComponent {
     localStorage.removeItem('userid');
     localStorage.removeItem('jwtToken');
     this.isLoggedIn = false;
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
   }
 }

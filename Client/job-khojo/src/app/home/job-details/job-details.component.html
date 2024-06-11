@@ -7,17 +7,20 @@
           <h6 class="fw-medium">{{ job.subtitle }}</h6>
         </div>
         <div>
-          <button mat-flat-button (click)="apply(job.jobId)">Apply</button>
+          <button *ngIf="!isApplied" mat-flat-button (click)="apply(job.jobId)">
+            Apply
+          </button>
+          <button *ngIf="isApplied" mat-flat-button disabled>Applied</button>
         </div>
       </div>
     </mat-card-content>
   </mat-card>
   <mat-card class="p-4 job-desc">
     <mat-card-content>
-      <div class="d-flex align-items-center mb-4">
-        <div class="openings d-flex align-items-center ms-2 me-3">
-          <mat-icon class="me-2">group</mat-icon
-          ><strong>{{ job.openings }}</strong>
+      <div class="d-flex align-items-center mb-2">
+        <div class="d-flex align-items-center ms-2 me-3">
+          <mat-icon class="me-2">place</mat-icon
+          ><strong>{{ getLocation(job.location) }}</strong>
         </div>
         |
         <div class="d-flex align-items-center ms-xxl-2 me-2">
@@ -29,11 +32,11 @@
           <mat-icon class="me-2">laptop</mat-icon
           ><strong>{{ getJobType(job.jobType) }}</strong>
         </div>
-        |
-        <div class="d-flex align-items-center ms-2 me-3">
-          <mat-icon class="me-2">place</mat-icon
-          ><strong>{{ getLocation(job.location) }}</strong>
-        </div>
+      </div>
+      <div class="openings d-flex align-items-center ms-2 me-3 mb-3">
+        <p>
+          Openings: <strong>{{ job.openings }}</strong>
+        </p>
       </div>
       <div>
         <p class="fw-medium fs-5">Description:</p>

@@ -7,6 +7,8 @@ import { ApiService } from '../../core/services/api.service';
 export class JobSeekerService {
   getAllJobsUrl = 'https://localhost:7083/Jobs/GetAllJobs';
   getJobByIdUrl = 'https://localhost:7083/Jobs/GetJob?id=';
+  getSavedJobsUrl = 'https://localhost:7083/Jobs/GetSavedJobs';
+  getAppliedJobsUrl = 'https://localhost:7083/Jobs/GetAppliedJobs';
 
   constructor(private api: ApiService) {}
 
@@ -16,5 +18,13 @@ export class JobSeekerService {
 
   getJobById(id: string | null) {
     return this.api.get(this.getJobByIdUrl + id);
+  }
+
+  getSavedJobs() {
+    return this.api.get(this.getSavedJobsUrl);
+  }
+
+  getAppliedJobs() {
+    return this.api.get(this.getAppliedJobsUrl);
   }
 }
