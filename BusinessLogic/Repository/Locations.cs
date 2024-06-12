@@ -37,5 +37,18 @@ namespace BusinessLogic.Repository
 
             return model;
         }
+
+        public LocationModel GetLocationById(int id)
+        {
+            var location = _context.Locations.FirstOrDefault(x => x.Id == id);
+            var model = new LocationModel();
+
+            if(location != null)
+            {
+                model.LocationId = location.Id;
+                model.LocationName = location.Location1;
+            }
+            return model;
+        }
     }
 }

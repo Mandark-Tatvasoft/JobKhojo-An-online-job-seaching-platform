@@ -3,7 +3,7 @@
 >
   <div class="row w-100">
     <form
-      id="sigInForm"
+      id="addJobForm"
       [formGroup]="addJobForm"
       (submit)="handleSubmit()"
       class="col-12"
@@ -48,6 +48,8 @@
           />
           @if (addJobForm.get('salary')?.hasError('min')) {
           <mat-error>The salary should be more than 0</mat-error>
+          } @if (addJobForm.get('salary')?.hasError('max')) {
+          <mat-error>The salary should not be more than 1cr</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">

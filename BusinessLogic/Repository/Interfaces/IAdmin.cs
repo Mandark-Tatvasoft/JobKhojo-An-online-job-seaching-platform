@@ -18,5 +18,9 @@ namespace BusinessLogic.Repository.Interfaces
         public bool AddJob(JobModel model);
 
         public bool EditJob(JobModel model);
+
+        public bool AddLocation(LocationModel model);
+
+        public bool EditLocation(LocationModel model);
     }
 }

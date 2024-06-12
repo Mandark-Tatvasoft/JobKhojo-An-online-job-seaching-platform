@@ -2,6 +2,7 @@ using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
 using Data.Models;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace BusinessLogic.Repository;
@@ -17,10 +18,17 @@ public class Jobs : IJobs
 
     }
 
-    public List<JobModel> GetAllJobs()
+    public List<JobModel> GetAllJobs(string token)
     {
         var jobs = _context.Jobs.Where(j => j.IsActive == true).ToList();
         var model = new List<JobModel>();
+        int[] savedJobs = new int[0];
+        _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
+        if(validatedToken != null)
+        {
+            var userId = int.Parse(validatedToken.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+            savedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs;
+        }
 
         foreach (var job in jobs)
         {
@@ -34,6 +42,7 @@ public class Jobs : IJobs
                 Salary = job.Salary,
                 JobType = job.JobType,
                 Location = job.Location,
+                isSaved = savedJobs.Contains(job.JobId),
             });
         }
 
@@ -41,10 +50,62 @@ public class Jobs : IJobs
 
     }
 
-    public List<JobModel> GetJobs(int limit)
+    public List<JobModel> GetJobs(int limit, string token)
     {
         var jobs = _context.Jobs.Where(j => j.IsActive == true).Take(limit).ToList();
         var model = new List<JobModel>();
+        int[] savedJobs = new int[0];
+        _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
+        if (validatedToken != null)
+        {
+            var userId = int.Parse(validatedToken.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+            savedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs;
+        }
+
+        foreach (var job in jobs)
+        {
+            model.Add(new JobModel
+            {
+                JobId = job.JobId,
+                Title = job.Title,
+                Subtitle = job.Subtitle,
+                Description = job.Description,
+                Openings = job.Openings,
+                Salary = job.Salary,
+                Location = job.Location,
+                JobType = job.JobType,
+            });
+        }
+
+        return model;
+    }
+
+    public List<JobModel> SearchJobs(string title, int jobType, int location, string token)
+    {
+        var jobs = _context.Jobs.Where(j => j.IsActive == true).ToList();
+        if(title != null && title != string.Empty)
+        {
+            jobs = jobs.Where(j => j.Title.ToLower().Contains(title.ToLower()) || j.Subtitle.ToLower().Contains(title.ToLower())).ToList();
+        }
+
+        if(jobType != 0)
+        {
+            jobs = jobs.Where(j => j.JobType == jobType).ToList();
+        }
+
+        if(location != 0)
+        {
+            jobs = jobs.Where(j => j.Location == location).ToList();
+        }
+        
+        var model = new List<JobModel>();
+        int[] savedJobs = new int[0];
+        _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
+        if (validatedToken != null)
+        {
+            var userId = int.Parse(validatedToken.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+            savedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs;
+        }
 
         foreach (var job in jobs)
         {
@@ -90,6 +151,7 @@ public class Jobs : IJobs
                             JobType = job.JobType,
                             Subtitle = job.Subtitle,
                             IsActive = job.IsActive,
+                            isSaved = true,
                         });
                     }
                 }

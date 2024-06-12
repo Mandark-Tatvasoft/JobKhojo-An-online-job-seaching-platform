@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
+import { Search } from '../../core/models/search.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,12 @@ export class HomeService {
     return this.api.get(this.getJobByIdUrl + id);
   }
 
+  searchJobs(model: Search) {
+    return this.api.get(
+      `https://localhost:7083/Jobs/SearchJobs?title=${model.title}&jobType=${model.jobType}&location=${model.location}`
+    );
+  }
+
   getAllJobs() {
     return this.api.get(this.getAllJobsUrl);
   }
@@ -44,7 +51,7 @@ export class HomeService {
     return this.api.put(this.editUserUrl, model);
   }
 
-  applyForJob(jobId: number) {
+  applyForJob(jobId: number | undefined) {
     return this.api.put(this.applyForJobUrl + jobId);
   }
 }

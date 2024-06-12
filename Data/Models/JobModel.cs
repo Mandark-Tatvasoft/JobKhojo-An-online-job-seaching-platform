@@ -31,4 +31,6 @@ public class JobModel
     public int AppliedBy { get; set; }
 
     public bool isApplied { get; set; }
+
+    public bool isSaved { get; set; }
 }

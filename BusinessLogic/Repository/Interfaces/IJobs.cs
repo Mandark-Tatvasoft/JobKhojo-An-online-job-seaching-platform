@@ -4,9 +4,11 @@ namespace BusinessLogic.Repository.Interfaces;
 
 public interface IJobs
 {
-    public List<JobModel> GetAllJobs();
+    public List<JobModel> GetAllJobs(string token);
 
-    public List<JobModel> GetJobs(int limit);
+    public List<JobModel> GetJobs(int limit, string token);
+
+    public List<JobModel> SearchJobs(string title, int jobType, int location, string token);
 
     public JobModel GetJob(int id, string token);
 

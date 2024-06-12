@@ -139,6 +139,10 @@ namespace BusinessLogic.Repository
                 job.CreatedBy = model.CreatedBy;
                 job.Description = model.Description;
             }
+            else
+            {
+                return false;
+            }
 
             try
             {
@@ -149,6 +153,50 @@ namespace BusinessLogic.Repository
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public bool AddLocation(LocationModel model)
+        {
+            var newLocation = new Location()
+            {
+                Location1 = model.LocationName
+            };
+
+            try
+            {
+                _context.Locations.Add(newLocation);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public bool EditLocation(LocationModel model)
+        {
+            var location = _context.Locations.FirstOrDefault(l => l.Id == model.LocationId);
+            if(location != null)
+            {
+                location.Location1 = model.LocationName;
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else
+            {
                 return false;
             }
         }

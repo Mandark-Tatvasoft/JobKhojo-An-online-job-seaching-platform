@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Job } from '../../core/models/job.model';
 import { HomeService } from '../services/home.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,28 +13,23 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-job-details',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule, CommonModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './job-details.component.html',
   styleUrl: './job-details.component.css',
 })
 export class JobDetailsComponent {
   id: string | null = '0';
-  job: Job = {
-    jobId: 0,
-    title: '',
-    subtitle: '',
-    description: '',
-    openings: 0,
-    salary: 0,
-    location: 0,
-    jobType: 0,
-    createdBy: 0,
-    isActive: false,
-    appliedBy: 0,
-  };
+  job!: Job;
   jobTypes: JobType[] = [];
   locations: Location[] = [];
   isApplied: boolean = false;
+  isRecruiter: boolean = localStorage.getItem('role') == '2' ? true : false;
 
   constructor(
     private service: HomeService,
@@ -43,7 +38,7 @@ export class JobDetailsComponent {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit() {
+  getJob() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.service.getJobById(this.id).subscribe((res) => {
       if (res.isSuccess) {
@@ -51,18 +46,28 @@ export class JobDetailsComponent {
         this.isApplied = res.data.isApplied;
       }
     });
+  }
 
+  getJobTypes() {
     this.service.getJobTypes().subscribe((res) => {
       if (res.isSuccess) {
         this.jobTypes = res.data;
       }
     });
+  }
 
+  getLocations() {
     this.service.getLocations().subscribe((res) => {
       if (res.isSuccess) {
         this.locations = res.data;
       }
     });
+  }
+
+  ngOnInit() {
+    this.getJob();
+    this.getJobTypes();
+    this.getLocations();
   }
 
   getLocation(id: number) {
@@ -75,7 +80,7 @@ export class JobDetailsComponent {
     return this.jobTypes.find((e) => e.jobTypeId == id)?.jobType.toString();
   }
 
-  apply(jobId: number) {
+  apply(jobId: number | undefined) {
     let userId = localStorage.getItem('userid');
     if (userId) {
       this.service.getUser().subscribe((res) => {

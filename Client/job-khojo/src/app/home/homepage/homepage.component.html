@@ -1,23 +1,57 @@
 <div class="position-relative">
   <div class="d-flex align-items-center" id="search-container">
-    <div class="d-flex flex-column justify-content-center">
+    <div class="container-fluid">
       <h1 class="fw-bold" id="website-title-text">Welcome to JobKhojo</h1>
       <p id="website-subtitle-text">
         An online solution for finding your dream job!
       </p>
-      <mat-form-field appearance="outline">
-        <mat-label>Search for the job you want</mat-label>
-        <input type="search" matInput />
-      </mat-form-field>
-      <button
-        mat-flat-button
-        color="primary"
-        aria-label="Example icon button with a delete icon"
-        class="w-25"
-      >
-        <mat-icon>search</mat-icon>
-        Search
-      </button>
+      <div class="row mt-2">
+        <form
+          [formGroup]="searchForm"
+          (submit)="handleSubmit()"
+          class="row col-5"
+        >
+          <mat-form-field appearance="outline" class="col-6">
+            <mat-label>Search for the job you want</mat-label>
+            <input
+              type="search"
+              matInput
+              name="title"
+              formControlName="title"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-3 ps-0">
+            <mat-label>Locations</mat-label>
+            <mat-select name="location" formControlName="location">
+              <mat-option
+                *ngFor="let location of locations"
+                [value]="location.locationId"
+                >{{ location.locationName }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-3 ps-0">
+            <mat-label>Job Type</mat-label>
+            <mat-select name="jobType" formControlName="jobType">
+              <mat-option
+                *ngFor="let type of jobTypes"
+                [value]="type.jobTypeId"
+                >{{ type.jobType }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-flat-button
+            color="primary"
+            aria-label="Example icon button with a delete icon"
+            class="col-2 ms-2"
+            type="submit"
+          >
+            <mat-icon>search</mat-icon>
+            Search
+          </button>
+        </form>
+      </div>
     </div>
   </div>
   <div id="overlay-div" class="position-absolute"></div>

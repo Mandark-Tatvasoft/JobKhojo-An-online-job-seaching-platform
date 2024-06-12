@@ -14,6 +14,9 @@ import { spaceValidator } from '../../core/validators/whitespace.validator';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeService } from '../services/home.service';
 import { Router } from '@angular/router';
+import { ModelFormGroup } from '../../core/models/form-type.model';
+import { Profile } from '../../core/models/profile.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -24,11 +27,14 @@ import { Router } from '@angular/router';
     MatCardModule,
     ReactiveFormsModule,
     MatButtonModule,
+    CommonModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
+  isSeeker: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private service: HomeService,
@@ -39,15 +45,7 @@ export class ProfileComponent {
 
   resume: string = '';
 
-  profileForm!: FormGroup<{
-    username: FormControl<string | null>;
-    firstname: FormControl<string | null>;
-    lastname: FormControl<string | null>;
-    email: FormControl<string | null>;
-    mobile: FormControl<string | null>;
-    resume: FormControl<string | null>;
-    userId: FormControl<number | null>;
-  }>;
+  profileForm!: ModelFormGroup<Profile>;
 
   ngOnInit() {
     this.service.getUser().subscribe((res) => {
@@ -63,6 +61,15 @@ export class ProfileComponent {
         this.resume = res.data.resume;
       }
     });
+    this.checkUser();
+  }
+
+  checkUser() {
+    if (localStorage.getItem('role') == '3') {
+      this.isSeeker = true;
+    } else {
+      this.isSeeker = false;
+    }
   }
 
   handleSubmit() {
@@ -81,7 +88,7 @@ export class ProfileComponent {
       lastname: [''],
       username: ['', [Validators.required, spaceValidator]],
       email: ['', [Validators.required, spaceValidator, Validators.email]],
-      mobile: ['', Validators.pattern('[789]\\d{9}')],
+      mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
       resume: [''],
       userId: [0],
     });

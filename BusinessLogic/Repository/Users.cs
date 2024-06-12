@@ -58,11 +58,11 @@ namespace BusinessLogic.Repository
                     {
                         model.Username = user.Username;
                         model.UserId = user.UserId;
-                        model.Resume = user.Resume != null ? user.Resume : null;
                         model.Firstname = user.Firstname;
                         model.Lastname = user.Lastname;
                         model.Email = user.Email;
                         model.Mobile = user.Mobile;
+                        model.Resume = user.Resume;
                     }
                 }
             }

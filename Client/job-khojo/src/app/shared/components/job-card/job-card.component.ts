@@ -17,20 +17,9 @@ import { SharedService } from '../../services/shared.service';
   styleUrl: './job-card.component.css',
 })
 export class JobCardComponent {
-  @Input() Job: Job = {
-    jobId: 0,
-    title: 'test',
-    subtitle: '',
-    description: 'test desc',
-    openings: 0,
-    salary: 0,
-    location: 0,
-    jobType: 0,
-    createdBy: 0,
-    isActive: true,
-    appliedBy: 0,
-  };
+  @Input() Job!: Job;
   @Input() isSavedJobPage: boolean = false;
+
   isRecruiter: boolean = false;
   isSeeker: boolean = true;
   jobTypes: JobType[] = [];
@@ -38,7 +27,7 @@ export class JobCardComponent {
 
   constructor(private router: Router, private service: SharedService) {}
 
-  ngOnInit(): void {
+  setUser() {
     let role = localStorage.getItem('role');
     if (role == '2') {
       this.isRecruiter = true;
@@ -47,13 +36,17 @@ export class JobCardComponent {
       this.isSeeker = true;
       this.isRecruiter = false;
     }
+  }
 
+  getJobTypes() {
     this.service.getJobTypes().subscribe((res) => {
       if (res.isSuccess) {
         this.jobTypes = res.data;
       }
     });
+  }
 
+  getLocations() {
     this.service.getLocations().subscribe((res) => {
       if (res.isSuccess) {
         this.locations = res.data;
@@ -61,7 +54,13 @@ export class JobCardComponent {
     });
   }
 
-  editJob(id: number) {
+  ngOnInit(): void {
+    this.setUser();
+    this.getJobTypes();
+    this.getLocations();
+  }
+
+  editJob(id: number | undefined) {
     this.router.navigate(['recruiter/edit-job', id]);
   }
 
@@ -75,11 +74,11 @@ export class JobCardComponent {
     return this.jobTypes.find((e) => e.jobTypeId == id)?.jobType.toString();
   }
 
-  openJob(id: number) {
+  openJob(id: number | undefined) {
     this.router.navigate(['job-details', id]);
   }
 
-  saveJob(jobId: number) {
+  saveJob(jobId: number | undefined) {
     if (localStorage.getItem('userid')) {
       this.service.saveJob(jobId).subscribe();
     } else {

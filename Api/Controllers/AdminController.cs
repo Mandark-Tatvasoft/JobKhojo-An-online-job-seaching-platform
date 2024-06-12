@@ -113,13 +113,38 @@ namespace Api.Controllers
         public IActionResult addLocation(LocationModel model)
         {
             var res = new ResponseModel<string>();
-            return Ok(res);
+            var isSuccess = _admin.AddLocation(model);
+            if (isSuccess)
+            {
+                res.IsSuccess = true;
+                res.Message = "Location added successfully";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There were some errors";
+                return BadRequest(res);
+            }
         }
 
         [HttpPut("EditLocation")]
         public IActionResult editLocation(LocationModel model)
         {
             var res = new ResponseModel<string>();
+            var isSuccess = _admin.EditLocation(model);
+            if (isSuccess)
+            {
+                res.IsSuccess = true;
+                res.Message = "Location edited successfully";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There were some errors";
+                return BadRequest(res);
+            }
             return Ok(res);
         }
         #endregion

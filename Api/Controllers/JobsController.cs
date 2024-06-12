@@ -19,7 +19,8 @@ public class JobsController : ControllerBase
     public IActionResult GetAll()
     {
         var res = new ResponseModel<List<JobModel>>();
-        var jobs = _jobs.GetAllJobs();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var jobs = _jobs.GetAllJobs(token);
         if(jobs == null)
         {
             res.IsSuccess = false;
@@ -38,8 +39,29 @@ public class JobsController : ControllerBase
     public IActionResult GetLimited(int limit)
     {
         var res = new ResponseModel<List<JobModel>>();
-        var jobs = _jobs.GetJobs(limit);
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var jobs = _jobs.GetJobs(limit, token);
         if (jobs == null)
+        {
+            res.IsSuccess = false;
+            res.Message = "No jobs found";
+            return NotFound(res);
+        }
+        else
+        {
+            res.IsSuccess = true;
+            res.Data = jobs;
+            return Ok(res);
+        }
+    }
+
+    [HttpGet("SearchJobs")]
+    public IActionResult Search(string title, int jobType, int location)
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var jobs = _jobs.SearchJobs(title, jobType, location, token);
+        if (jobs.Count == 0)
         {
             res.IsSuccess = false;
             res.Message = "No jobs found";

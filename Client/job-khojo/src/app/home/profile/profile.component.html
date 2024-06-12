@@ -50,6 +50,7 @@
                 matInput
                 name="username"
                 formControlName="username"
+                readonly
               />
               @if (profileForm.get('username')?.hasError('required')) {
               <mat-error>Username is required</mat-error>
@@ -72,9 +73,32 @@
               <mat-error>Enter a valid mobile number</mat-error>
               }
             </mat-form-field>
-            <label>Resume</label>
-            <input type="file" name="resume" formControlName="resume" />
-            <div class="d-flex justify-content-center">
+            <div *ngIf="isSeeker">
+              <label>Resume : </label>
+              <div class="fw-bold">{{ resume }}</div>
+              <div class="fw-bold">{{ profileForm.value.resume }}</div>
+              <input
+                type="file"
+                name="resume"
+                formControlName="resume"
+                id="resume"
+                hidden
+              />
+              <label
+                for="resume"
+                *ngIf="resume"
+                class="btn btn-primary resume-btn p-2 ps-4 pe-4 me-2"
+                >Edit</label
+              >
+              <label
+                for="resume"
+                *ngIf="!resume"
+                class="btn btn-primary resume-btn p-2 ps-4 pe-4 me-2"
+                >Upload</label
+              >
+              <a href="#" *ngIf="resume" mat-raised-button>View</a>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
               <button type="submit" mat-flat-button>Submit</button>
             </div>
           </div>

@@ -33,7 +33,7 @@ export class JobsComponent {
     });
   }
 
-  editJob(jobId: number) {
+  editJob(jobId: number | undefined) {
     this.router.navigate(['admin/jobs/edit-job', jobId]);
   }
 

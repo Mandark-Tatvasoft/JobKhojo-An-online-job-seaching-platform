@@ -3,8 +3,8 @@
 >
   <div class="row w-100">
     <form
-      id="sigInForm"
-      [formGroup]="addJobForm"
+      id="editJobForm"
+      [formGroup]="editJobForm"
       (submit)="handleSubmit()"
       class="col-12"
     >
@@ -15,14 +15,14 @@
         <mat-form-field class="form-input mb-2 col-md-6">
           <mat-label>Title</mat-label>
           <input matInput name="title" formControlName="title" />
-          @if (addJobForm.get('title')?.hasError('required')) {
+          @if (editJobForm.get('title')?.hasError('required')) {
           <mat-error>Title is required</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">
           <mat-label>Subtitle</mat-label>
           <input matInput name="subtitle" formControlName="subtitle" />
-          @if (addJobForm.get('subtitle')?.hasError('required')) {
+          @if (editJobForm.get('subtitle')?.hasError('required')) {
           <mat-error>Subtitle is required</mat-error>
           }
         </mat-form-field>
@@ -34,7 +34,7 @@
             name="openings"
             formControlName="openings"
           />
-          @if (addJobForm.get('openings')?.hasError('min')) {
+          @if (editJobForm.get('openings')?.hasError('min')) {
           <mat-error>There should be atleast 1 opening</mat-error>
           }
         </mat-form-field>
@@ -46,8 +46,10 @@
             name="salary"
             formControlName="salary"
           />
-          @if (addJobForm.get('salary')?.hasError('min')) {
+          @if (editJobForm.get('salary')?.hasError('min')) {
           <mat-error>The salary should be more than 0</mat-error>
+          } @if (editJobForm.get('salary')?.hasError('max')) {
+          <mat-error>The salary should not be more than 1cr</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">
@@ -59,7 +61,7 @@
               >{{ type.jobType }}</mat-option
             >
           </mat-select>
-          @if (addJobForm.get('jobType')?.hasError('min')) {
+          @if (editJobForm.get('jobType')?.hasError('min')) {
           <mat-error>Please select the type of job</mat-error>
           }
         </mat-form-field>
@@ -72,7 +74,7 @@
               >{{ item.locationName }}</mat-option
             >
           </mat-select>
-          @if (addJobForm.get('location')?.hasError('min')) {
+          @if (editJobForm.get('location')?.hasError('min')) {
           <mat-error>please select the location of job</mat-error>
           }
         </mat-form-field>
@@ -83,7 +85,7 @@
               item.companyName
             }}</mat-option>
           </mat-select>
-          @if (addJobForm.get('recruiter')?.hasError('min')) {
+          @if (editJobForm.get('recruiter')?.hasError('min')) {
           <mat-error>please select the location of job</mat-error>
           }
         </mat-form-field>
@@ -94,7 +96,7 @@
             name="description"
             formControlName="description"
           ></textarea>
-          @if (addJobForm.get('description')?.hasError('required')) {
+          @if (editJobForm.get('description')?.hasError('required')) {
           <mat-error>Description is required</mat-error>
           }
         </mat-form-field>

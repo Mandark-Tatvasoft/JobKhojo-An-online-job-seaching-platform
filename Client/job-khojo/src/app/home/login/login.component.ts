@@ -64,10 +64,7 @@ export class LoginComponent {
       this.service.login(this.loginModel).subscribe((res) => {
         if (res.isSuccess) {
           this.user = res.data;
-
-          localStorage.setItem('role', this.user.role.toString());
-          localStorage.setItem('userid', this.user.userId.toString());
-          localStorage.setItem('jwtToken', this.user.token);
+          this.setUser();
 
           var path = localStorage.getItem('path');
           if (path) {
@@ -97,5 +94,11 @@ export class LoginComponent {
 
   ngOnDestroy() {
     localStorage.removeItem('path');
+  }
+
+  setUser() {
+    localStorage.setItem('role', this.user.role.toString());
+    localStorage.setItem('userid', this.user.userId.toString());
+    localStorage.setItem('jwtToken', this.user.token);
   }
 }

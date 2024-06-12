@@ -18,6 +18,7 @@ import { Location } from '../../core/models/location.model';
 import { MatSelectModule } from '@angular/material/select';
 import { JobType } from '../../core/models/job-type.model';
 import { CommonModule } from '@angular/common';
+import { ModelFormGroup } from '../../core/models/form-type.model';
 
 @Component({
   selector: 'app-edit-job',
@@ -35,29 +36,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-job.component.css',
 })
 export class AddJobComponent {
-  addJobForm!: FormGroup<{
-    title: FormControl<string | null>;
-    subtitle: FormControl<string | null>;
-    description: FormControl<string | null>;
-    openings: FormControl<number | null>;
-    salary: FormControl<number | null>;
-    jobType: FormControl<number | null>;
-    location: FormControl<number | null>;
-    isActive: FormControl<boolean | null>;
-  }>;
-  job: Job = {
-    jobId: 0,
-    title: '',
-    subtitle: '',
-    description: '',
-    openings: 0,
-    salary: 0,
-    location: 0,
-    jobType: 0,
-    createdBy: 0,
-    isActive: false,
-    appliedBy: 0,
-  };
+  addJobForm!: ModelFormGroup<Job>;
+  job!: Job;
 
   jobTypes: JobType[] = [];
   locations: Location[] = [];
@@ -92,6 +72,7 @@ export class AddJobComponent {
       openings: [1, [Validators.required, Validators.min(1)]],
       salary: [0, [Validators.required, Validators.min(1)]],
       jobType: [0, [Validators.required, Validators.min(1)]],
+      createdBy: [0],
       location: [0, [Validators.required, Validators.min(1)]],
       isActive: [true],
     });

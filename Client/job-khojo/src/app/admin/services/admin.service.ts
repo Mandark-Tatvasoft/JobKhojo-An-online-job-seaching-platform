@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { NewUser } from '../../core/models/signup.model';
 import { Job } from '../../core/models/job.model';
+import { Location } from '../../core/models/location.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,9 @@ export class AdminService {
   addJobUrl = 'https://localhost:7083/Admin/AddJob';
   editJobUrl = 'https://localhost:7083/Admin/EditJob';
   getJobUrl = 'https://localhost:7083/Jobs/GetJob?id=';
+  getLocationUrl = 'https://localhost:7083/Locations/GetLocation?id=';
+  addLocationUrl = 'https://localhost:7083/Admin/AddLocation';
+  editLocationUrl = 'https://localhost:7083/Admin/EditLocation';
 
   getAllJobs() {
     return this.api.get(this.getAllJobsUrl);
@@ -63,5 +67,17 @@ export class AdminService {
 
   editJob(job: Job) {
     return this.api.put(this.editJobUrl, job);
+  }
+
+  getLocation(id: string | null) {
+    return this.api.get(this.getLocationUrl + id);
+  }
+
+  addLocation(model: Location) {
+    return this.api.post(this.addLocationUrl, model);
+  }
+
+  editLocation(model: Location) {
+    return this.api.put(this.editLocationUrl, model);
   }
 }

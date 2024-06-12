@@ -36,5 +36,24 @@ namespace Api.Controllers
                 return NotFound(res);
             }
         }
+
+        [HttpGet("GetLocation")]
+        public IActionResult Get(int id)
+        {
+            var res = new ResponseModel<LocationModel>();
+            var data = _locations.GetLocationById(id);
+            if(data != null)
+            {
+                res.IsSuccess = true;
+                res.Data = data;
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There is no such location";
+                return NotFound(res);
+            }
+        }
     }
 }

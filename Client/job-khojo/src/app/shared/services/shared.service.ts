@@ -19,7 +19,7 @@ export class SharedService {
     return this.api.get(this.getJobTypesUrl);
   }
 
-  saveJob(jobId: number) {
+  saveJob(jobId: number | undefined) {
     return this.api.put(this.saveJobUrl + jobId);
   }
 }
