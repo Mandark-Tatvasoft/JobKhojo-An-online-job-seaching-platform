@@ -21,7 +21,16 @@
           <td>{{ getLocation(job.location) }}</td>
           <td>{{ job.openings }}</td>
           <td class="text-end">
-            <button mat-flat-button (click)="editJob(job.jobId)">Edit</button>
+            <button mat-flat-button (click)="editJob(job.jobId)" class="me-2">
+              Edit
+            </button>
+            <button
+              mat-flat-button
+              color="warn"
+              (click)="openDeleteDialog(job.jobId)"
+            >
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>

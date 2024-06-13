@@ -91,6 +91,12 @@ export class ProfileComponent {
       mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
       resume: [''],
       userId: [0],
+      resumeFile: [new File([''], 'test')],
     });
+  }
+
+  patchFile(event: Event) {
+    const file = (event.target as HTMLInputElement).files![0];
+    this.profileForm.patchValue({ resumeFile: file });
   }
 }

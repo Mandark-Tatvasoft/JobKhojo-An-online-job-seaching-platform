@@ -1,6 +1,9 @@
 ﻿using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
+using Data.Data;
 using Data.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,6 +17,8 @@ namespace BusinessLogic.Repository
     {
         private readonly AppDbContext _context;
         private readonly IJwtService _jwt;
+
+        private string contentPath = @"D:\Projects\JobKhojo\Client\job-khojo\src\assets";
 
         public Users(AppDbContext context, IJwtService jwt)
         {
@@ -62,7 +67,7 @@ namespace BusinessLogic.Repository
                         model.Lastname = user.Lastname;
                         model.Email = user.Email;
                         model.Mobile = user.Mobile;
-                        model.Resume = user.Resume;
+                        model.Resume = user.Resume!;
                     }
                 }
             }
@@ -86,17 +91,117 @@ namespace BusinessLogic.Repository
             return model;
         }
 
-        public bool UpdateUser(ProfileModel model)
+        public List<RecruiterModel> GetRecruiters()
+        {
+            var model = new List<RecruiterModel>();
+            var recruiters = _context.Users.Where(u => u.RoleId == 2).ToList();
+            if (recruiters.Count > 0)
+            {
+                foreach (var recruiter in recruiters)
+                {
+                    model.Add(new RecruiterModel
+                    {
+                        UserId = recruiter.UserId,
+                        CompanyName = recruiter.CompanyName
+                    });
+                }
+            }
+            return model;
+        }
+
+        public bool AddUser(SignupModel model)
+        {
+            if (model.Password == model.ConfirmPassword)
+            {
+                var newUser = new User()
+                {
+                    Username = model.Username,
+                    Email = model.Email,
+                    Firstname = model.Firstname,
+                    Lastname = model.Lastname,
+                    PasswordHashed = model.Password,
+                    Mobile = model.Mobile,
+                    RoleId = model.Role,
+                    CompanyName = model.CompanyName,
+                    AppliedJobs = new int[0],
+                    SavedJobs = new int[0],
+                    IsActive = true
+                };
+
+                try
+                {
+                    _context.Users.Add(newUser);
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else return false;
+        }
+
+        public bool DisableUser(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user != null) 
+            { 
+                user.IsActive = false;
+
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                catch (Exception ex) 
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else return false;
+        }
+
+        public bool UpdateUserProfile(ProfileModel model)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == model.UserId);
             if (user != null)
             {
-                user.Resume = model.Resume;
+                user.Resume = model.Resume != null || model.Resume != "" ? model.Resume : user.Resume;
                 user.Username = model.Username;
                 user.Email = model.Email;
                 user.Mobile = model.Mobile;
                 user.Firstname = model.Firstname;
                 user.Lastname = model.Lastname;
+            }
+
+            else
+            {
+                return false;
+            }
+
+            try
+            {
+                string path = contentPath;
+                string filePath = model.UserId + "_Resume." + model.ResumeFile.FileName.Split('.').LastOrDefault();
+                string fullPath = Path.Combine(path, filePath);
+
+                IFormFile file1 = model.ResumeFile;
+                FileStream stream = new FileStream(fullPath, FileMode.Create);
+                file1.CopyTo(stream);
+
+                user.Resume = filePath;
+                stream.Close();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
 
             try
@@ -109,6 +214,32 @@ namespace BusinessLogic.Repository
                 Console.WriteLine(ex.Message);
                 return false;
             }
+        }
+
+        public bool AdminEditUser(SignupModel model, int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            if (user != null)
+            {
+                user.Email = model.Email;
+                user.Mobile = model.Mobile;
+                user.Firstname = model.Firstname;
+                user.Lastname = model.Lastname;
+                user.RoleId = model.Role;
+                user.CompanyName = model.CompanyName;
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else return false;
         }
     }
 }

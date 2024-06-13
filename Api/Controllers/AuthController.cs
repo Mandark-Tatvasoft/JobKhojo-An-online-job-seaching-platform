@@ -17,6 +17,8 @@ public class AuthController : ControllerBase
         _jwt = jwt;
     }
 
+    #region Login
+
     [HttpPost("Login")]
     public IActionResult Login(LoginModel model)
     {
@@ -27,14 +29,23 @@ public class AuthController : ControllerBase
             var user = _login.LogIn(model);
             if (user.UserId != 0)
             {
-                var jwtToken = _jwt.GenerateToken(user);
+                if(!user.IsActive)
+                {
+                    res.IsSuccess = false;
+                    res.Message = "You are not allowed to login";
+                    return Ok(res);
+                }
+                else
+                {
+                    var jwtToken = _jwt.GenerateToken(user);
 
-                user.Token = jwtToken;
+                    user.Token = jwtToken;
 
-                res.IsSuccess = true;
-                res.Message = "User Logged in successfully";
-                res.Data = user;
-                return Ok(res);
+                    res.IsSuccess = true;
+                    res.Message = "User Logged in successfully";
+                    res.Data = user;
+                    return Ok(res);
+                }
             }
             else
             {
@@ -51,8 +62,11 @@ public class AuthController : ControllerBase
         }
     }
 
+    #endregion
+
+    #region Signup
+
     [HttpPost("Signup")]
-    
     public IActionResult Signup(SignupModel model)
     {
         if (!ModelState.IsValid)
@@ -81,9 +95,5 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpGet("Error")]
-    public IActionResult Error()
-    {
-        return Unauthorized("Error!");
-    }
+    #endregion
 }

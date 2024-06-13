@@ -16,6 +16,8 @@ namespace Api.Controllers
             _locations = locations;
         }
 
+        #region Get
+
         [HttpGet("GetAllLocations")]
         public IActionResult GetAll() 
         {
@@ -55,5 +57,7 @@ namespace Api.Controllers
                 return NotFound(res);
             }
         }
+
+        #endregion
     }
 }

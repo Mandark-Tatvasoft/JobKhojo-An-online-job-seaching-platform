@@ -10,5 +10,5 @@ export class Job {
   createdBy!: number;
   isActive!: boolean;
   appliedBy?: number;
-  isSaved?: number;
+  isSaved?: boolean;
 }

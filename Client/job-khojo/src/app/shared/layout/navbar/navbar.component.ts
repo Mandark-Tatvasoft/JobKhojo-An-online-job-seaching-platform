@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
+import { SharedService } from '../../services/shared.service';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatButtonModule, RouterLink, CommonModule],
+  imports: [MatButtonModule, MatBadgeModule, RouterLink, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -14,8 +16,15 @@ export class NavbarComponent {
   isLoggedIn: boolean = false;
   isSeeker: boolean = false;
   isAdmin: boolean = false;
+  appliedCount!: number;
+  savedCount!: number;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private service: SharedService) {}
+
+  ngOnInit() {
+    this.getAppliedCount();
+    this.getSavedCount();
+  }
 
   ngDoCheck() {
     this.checkLogin();
@@ -44,5 +53,21 @@ export class NavbarComponent {
     localStorage.removeItem('jwtToken');
     this.isLoggedIn = false;
     this.router.navigate(['login']);
+  }
+
+  getAppliedCount() {
+    this.service.getAppliedJobsCount().subscribe((res) => {
+      if (res.isSuccess) {
+        this.appliedCount = res.data;
+      }
+    });
+  }
+
+  getSavedCount() {
+    this.service.getSavedJobsCount().subscribe((res) => {
+      if (res.isSuccess) {
+        this.savedCount = res.data;
+      }
+    });
   }
 }

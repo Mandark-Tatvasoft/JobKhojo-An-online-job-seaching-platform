@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { Search } from '../../core/models/search.model';
+import { HttpHeaders } from '@angular/common/http';
+import { Profile } from '../../core/models/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +50,18 @@ export class HomeService {
   }
 
   editUser(model: any) {
-    return this.api.put(this.editUserUrl, model);
+    const headers = new HttpHeaders().append('X-File-Base64', 'base64File');
+    let formData = new FormData();
+    formData.append('firstname', model.firstname);
+    formData.append('lastname', model.lastname);
+    formData.append('email', model.email);
+    formData.append('username', model.username);
+    formData.append('userId', model.userId);
+    formData.append('mobile', model.mobile);
+    formData.append('resumeFile', model.resumeFile);
+    formData.append('resume', model.resume);
+
+    return this.api.post(this.editUserUrl, formData, headers);
   }
 
   applyForJob(jobId: number | undefined) {

@@ -12,5 +12,9 @@ namespace BusinessLogic.Repository.Interfaces
         public List<LocationModel> GetAllLocations();
 
         public LocationModel GetLocationById(int id);
+
+        public bool AddLocation(LocationModel model);
+
+        public bool EditLocation(LocationModel model);
     }
 }

@@ -21,7 +21,9 @@ namespace Data.Models
 
         public string Mobile { get; set; }
 
-        public string Resume { get; set; }
+        public string? Resume { get; set; }
+
+        public IFormFile? ResumeFile { get; set; }
 
     }
 }

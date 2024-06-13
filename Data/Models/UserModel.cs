@@ -11,4 +11,6 @@ public class UserModel
     public string Role { get; set; }
 
     public string Token { get; set; }
+
+    public bool IsActive { get; set; }
 }

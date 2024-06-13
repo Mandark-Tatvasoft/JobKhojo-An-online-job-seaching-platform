@@ -16,6 +16,7 @@
         mat-button
         class="fs-6 m-2"
         *ngIf="isLoggedIn && isSeeker"
+        [matBadge]="savedCount"
         routerLink="/job-seeker/saved-jobs"
         >Saved Jobs</a
       >
@@ -23,6 +24,7 @@
         mat-button
         class="fs-6 m-2"
         *ngIf="isLoggedIn && isSeeker"
+        [matBadge]="appliedCount"
         routerLink="/job-seeker/applied-jobs"
         >Applied Jobs</a
       >

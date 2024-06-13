@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { JobType } from '../../../core/models/job-type.model';
 import { Location } from '../../../core/models/location.model';
 import { SharedService } from '../../services/shared.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-job-card',
@@ -17,15 +19,18 @@ import { SharedService } from '../../services/shared.service';
   styleUrl: './job-card.component.css',
 })
 export class JobCardComponent {
-  @Input() Job!: Job;
-  @Input() isSavedJobPage: boolean = false;
+  @Input() job!: Job;
 
   isRecruiter: boolean = false;
   isSeeker: boolean = true;
   jobTypes: JobType[] = [];
   locations: Location[] = [];
 
-  constructor(private router: Router, private service: SharedService) {}
+  constructor(
+    private router: Router,
+    private service: SharedService,
+    private dialog: MatDialog
+  ) {}
 
   setUser() {
     let role = localStorage.getItem('role');
@@ -84,5 +89,16 @@ export class JobCardComponent {
     } else {
       this.router.navigate(['login']);
     }
+  }
+
+  unsaveJob(jobId: number | undefined) {
+    this.job.isSaved = false;
+    this.service.unsaveJob(jobId).subscribe();
+  }
+
+  openDeleteDialog() {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: { jobId: this.job.jobId },
+    });
   }
 }

@@ -8,25 +8,30 @@ using System.Web.Http.Cors;
 namespace Api.Controllers
 {
     [Route("[controller]")]
-    //[Authorize("1")]
+    [Authorize("1")]
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAdmin _admin;
+        private readonly IUsers _user;
+        private readonly IJobs _jobs;
+        private readonly ILocations _locations;
 
-        public AdminController(IAdmin admin)
+        public AdminController(IUsers user, IJobs jobs, ILocations locations)
         {
-            _admin = admin;
+            _user = user;
+            _jobs = jobs;
+            _locations = locations;
         }
 
         #region User
+
         [HttpPost("AddUser")]
         public IActionResult addUser(SignupModel model)
         {
             var res = new ResponseModel<string>();
             if(ModelState.IsValid)
             {
-                var isSuccess = _admin.AddUser(model);
+                var isSuccess = _user.AddUser(model);
                 if (isSuccess)
                 {
                     res.IsSuccess = true;
@@ -52,7 +57,7 @@ namespace Api.Controllers
         public IActionResult editUser(SignupModel model, string id)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _admin.EditUser(model, int.Parse(id));
+            var isSuccess = _user.AdminEditUser(model, int.Parse(id));
             if (isSuccess)
             {
                 res.IsSuccess = true;
@@ -66,14 +71,35 @@ namespace Api.Controllers
                 return BadRequest(res);
             }
         }
+
+        [HttpPut("DisableUser")]
+        public IActionResult disableUser(int id)
+        {
+            var res = new ResponseModel<string>();
+            var isSuccess = _user.DisableUser(id);
+            if (isSuccess)
+            {
+                res.IsSuccess = true;
+                res.Message = "User edited successfully";
+                return Ok(res);
+            }
+            else
+            {
+                res.IsSuccess = false;
+                res.Message = "There were some errors";
+                return BadRequest(res);
+            }
+        }
+
         #endregion
 
         #region Job
+
         [HttpPost("AddJob")]
         public IActionResult addJob(JobModel model)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _admin.AddJob(model);
+            var isSuccess = _jobs.AddJob(model);
             if (isSuccess)
             {
                 res.IsSuccess = true;
@@ -92,7 +118,7 @@ namespace Api.Controllers
         public IActionResult editJob(JobModel model)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _admin.EditJob(model);
+            var isSuccess = _jobs.EditJob(model);
             if (isSuccess)
             {
                 res.IsSuccess = true;
@@ -106,14 +132,16 @@ namespace Api.Controllers
                 return BadRequest(res);
             }
         }
+
         #endregion
 
         #region Location
+
         [HttpPost("AddLocation")]
         public IActionResult addLocation(LocationModel model)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _admin.AddLocation(model);
+            var isSuccess = _locations.AddLocation(model);
             if (isSuccess)
             {
                 res.IsSuccess = true;
@@ -132,7 +160,7 @@ namespace Api.Controllers
         public IActionResult editLocation(LocationModel model)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _admin.EditLocation(model);
+            var isSuccess = _locations.EditLocation(model);
             if (isSuccess)
             {
                 res.IsSuccess = true;
@@ -145,16 +173,17 @@ namespace Api.Controllers
                 res.Message = "There were some errors";
                 return BadRequest(res);
             }
-            return Ok(res);
         }
+
         #endregion
 
         #region Recruiter
+
         [HttpGet("GetRecruiters")]
         public IActionResult GetRecruiters()
         {
             var res = new ResponseModel<List<RecruiterModel>>();
-            var data = _admin.GetRecruiters();
+            var data = _user.GetRecruiters();
             if(data.Count > 0)
             {
                 res.IsSuccess = true;
@@ -168,6 +197,7 @@ namespace Api.Controllers
                 return BadRequest(res);
             }
         }
+
         #endregion
     }
 }

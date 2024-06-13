@@ -6,4 +6,5 @@ export class Profile {
   mobile!: string;
   resume!: string;
   userId!: number;
+  resumeFile!: File;
 }

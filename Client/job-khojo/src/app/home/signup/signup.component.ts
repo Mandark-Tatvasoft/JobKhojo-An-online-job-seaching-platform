@@ -86,7 +86,7 @@ export class SignupComponent {
       confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
       firstname: ['', [Validators.required, spaceValidator]],
       lastname: [''],
-      mobile: ['', Validators.pattern('[789]\\d{9}')],
+      mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
       role: [0, [Validators.required, Validators.min(1)]],
       companyName: ['', spaceValidator],
     });

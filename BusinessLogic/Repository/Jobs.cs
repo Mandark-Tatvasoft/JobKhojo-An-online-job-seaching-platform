@@ -42,7 +42,7 @@ public class Jobs : IJobs
                 Salary = job.Salary,
                 JobType = job.JobType,
                 Location = job.Location,
-                isSaved = savedJobs.Contains(job.JobId),
+                isSaved = savedJobs!.Contains(job.JobId),
             });
         }
 
@@ -74,9 +74,42 @@ public class Jobs : IJobs
                 Salary = job.Salary,
                 Location = job.Location,
                 JobType = job.JobType,
+                isSaved = savedJobs!.Contains(job.JobId),
             });
         }
 
+        return model;
+    }
+
+    public List<JobModel> GetAllListed(int id)
+    {
+        var model = new List<JobModel>();
+        try
+        {
+            var list = _context.Jobs.Where(x => x.CreatedBy == id).ToList();
+            foreach (var job in list)
+            {
+                model.Add(new JobModel
+                {
+                    JobId = job.JobId,
+                    Title = job.Title,
+                    Description = job.Description,
+                    Openings = job.Openings,
+                    Salary = job.Salary,
+                    Location = job.Location,
+                    Subtitle = job.Subtitle,
+                    JobType = job.JobType,
+                    CreatedBy = job.CreatedBy,
+                    IsActive = job.IsActive,
+                    AppliedBy = job.AppliedBy == null ? 0 : job.AppliedBy.Count(),
+                });
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
         return model;
     }
 
@@ -119,6 +152,7 @@ public class Jobs : IJobs
                 Salary = job.Salary,
                 Location = job.Location,
                 JobType = job.JobType,
+                isSaved = savedJobs!.Contains(job.JobId),
             });
         }
 
@@ -151,7 +185,7 @@ public class Jobs : IJobs
                             JobType = job.JobType,
                             Subtitle = job.Subtitle,
                             IsActive = job.IsActive,
-                            isSaved = true,
+                            isSaved = savedJobs!.Contains(job.JobId),
                         });
                     }
                 }
@@ -187,6 +221,7 @@ public class Jobs : IJobs
                             JobType = job.JobType,
                             Subtitle = job.Subtitle,
                             IsActive = job.IsActive,
+                            isSaved = appliedJobs.Contains(job.JobId),
                         });
                     }
                 }
@@ -194,6 +229,31 @@ public class Jobs : IJobs
             }
         }
         return model;
+    }
+
+    public int GetSavedJobsCount(string token)
+    {
+        var savedJobsCount = 0;
+        _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+        if (jwtToken != null)
+        {
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            savedJobsCount = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs.Count();
+        }
+        return savedJobsCount;
+    }
+
+    public int GetAppliedJobsCount(string token)
+    {
+        var appliedJobsCount = 0;
+        _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+        if (jwtToken != null)
+        {
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            appliedJobsCount = _context.Users.FirstOrDefault(u => u.UserId == userId).AppliedJobs.Count();
+            
+        }
+        return appliedJobsCount;
     }
 
     public JobModel GetJob(int id, string token)
@@ -237,6 +297,36 @@ public class Jobs : IJobs
 
     }
 
+    public bool AddJob(JobModel model)
+    {
+        var newJob = new Job()
+        {
+            IsActive = model.IsActive,
+            Title = model.Title,
+            Subtitle = model.Subtitle,
+            Openings = model.Openings,
+            Salary = model.Salary,
+            JobType = model.JobType,
+            Location = model.Location,
+            CreatedBy = model.CreatedBy,
+            Description = model.Description,
+            AppliedBy = new int[0],
+        };
+
+        try
+        {
+            _context.Jobs.Add(newJob);
+            _context.SaveChanges();
+            return true;
+        }
+
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
     public bool EditJob(JobModel model)
     {
         var job = _context.Jobs.FirstOrDefault(j => j.JobId == model.JobId);
@@ -250,6 +340,7 @@ public class Jobs : IJobs
             job.Salary = model.Salary;
             job.JobType = model.JobType;
             job.Location = model.Location;
+            job.CreatedBy = model.CreatedBy;
 
             try
             {
@@ -352,5 +443,85 @@ public class Jobs : IJobs
         {
             return false;
         }
+    }
+
+    public bool UnsaveJob(int jobId, string token)
+    {
+        _jwt.ValidateToken(token, out JwtSecurityToken jwtToken);
+        if (jwtToken != null)
+        {
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user != null)
+            {
+                var list = user.SavedJobs.ToList();
+                if (list.Remove(jobId))
+                {
+                    user.SavedJobs = list.ToArray();
+                }
+                
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool DeleteJob(int jobId)
+    {
+        var job = _context.Jobs.FirstOrDefault(j => j.JobId == jobId);
+        if (job != null)
+        {
+            job.IsDeleted = true;
+
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        else return false;
+    }
+
+    public List<JobTypeModel> GetAllJobTypes()
+    {
+        var types = _context.JobTypes.ToList();
+        var model = new List<JobTypeModel>();
+
+        if (types.Count() != 0)
+        {
+            foreach (var type in types)
+            {
+                model.Add(new JobTypeModel
+                {
+                    JobTypeId = type.Id,
+                    JobType = type.JobType1
+                });
+            }
+        }
+
+        return model;
     }
 }

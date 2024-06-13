@@ -14,12 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<ILogin, Login>();
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IRecruiter, Recruiter>();
 builder.Services.AddScoped<IJobs, Jobs>();
-builder.Services.AddScoped<IJobTypes, JobTypes>();
 builder.Services.AddScoped<ILocations, Locations>();
 builder.Services.AddScoped<IUsers, Users>();
-builder.Services.AddScoped<IAdmin, Admin>();
 builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddCors(options =>

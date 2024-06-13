@@ -98,6 +98,8 @@
               @if (signUpForm.get('mobile')?.touched &&
               signUpForm.get('mobile')?.hasError('pattern')) {
               <mat-error>Enter a valid mobile number</mat-error>
+              } @if (signUpForm.get('mobile')?.hasError('required')) {
+              <mat-error>Mobile number is required</mat-error>
               }
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">

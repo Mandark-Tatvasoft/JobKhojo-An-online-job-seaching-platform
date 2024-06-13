@@ -71,6 +71,8 @@
               @if (profileForm.get('mobile')?.touched &&
               profileForm.get('mobile')?.hasError('pattern')) {
               <mat-error>Enter a valid mobile number</mat-error>
+              } @if (profileForm.get('mobile')?.hasError('required')) {
+              <mat-error>Mobile number is required</mat-error>
               }
             </mat-form-field>
             <div *ngIf="isSeeker">
@@ -79,10 +81,11 @@
               <div class="fw-bold">{{ profileForm.value.resume }}</div>
               <input
                 type="file"
-                name="resume"
-                formControlName="resume"
+                name="resumeFile"
                 id="resume"
+                (change)="patchFile($event)"
                 hidden
+                accept="application/pdf"
               />
               <label
                 for="resume"
@@ -96,7 +99,14 @@
                 class="btn btn-primary resume-btn p-2 ps-4 pe-4 me-2"
                 >Upload</label
               >
-              <a href="#" *ngIf="resume" mat-raised-button>View</a>
+              <a
+                href="../../../assets/{{ resume }}"
+                target="_self"
+                download
+                *ngIf="resume"
+                mat-raised-button
+                >View</a
+              >
             </div>
             <div class="d-flex justify-content-center mt-4">
               <button type="submit" mat-flat-button>Submit</button>

@@ -9,18 +9,20 @@ namespace Api.Controllers
     [ApiController]
     public class JobTypesController : ControllerBase
     {
-        private readonly IJobTypes _types;
-        public JobTypesController(IJobTypes types) 
+        private readonly IJobs _jobs;
+        public JobTypesController(IJobs jobs) 
         {
-            _types = types;
+            _jobs = jobs;
         }
+
+        #region Get 
 
         [HttpGet("GetAllJobTypes")]
         public IActionResult GetAll() 
         {
             var res = new ResponseModel<List<JobTypeModel>>();
 
-            var data = _types.GetAllJobTypes();
+            var data = _jobs.GetAllJobTypes();
             if(data.Count() != 0) 
             {
                 res.Data = data;
@@ -34,5 +36,6 @@ namespace Api.Controllers
                 return NotFound(res);
             }
         }
+        #endregion
     }
 }

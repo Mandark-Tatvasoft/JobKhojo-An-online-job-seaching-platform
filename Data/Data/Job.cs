@@ -38,6 +38,9 @@ public partial class Job
     [StringLength(50)]
     public string? Subtitle { get; set; }
 
+    [Column("isDeleted")]
+    public bool? IsDeleted { get; set; }
+
     [ForeignKey("CreatedBy")]
     [InverseProperty("Jobs")]
     public virtual User CreatedByNavigation { get; set; } = null!;

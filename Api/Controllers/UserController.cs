@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Repository.Interfaces;
+﻿using BusinessLogic.Repository;
+using BusinessLogic.Repository.Interfaces;
 using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("GetAllUsers")]
+        [Authorize("1")]
         public IActionResult GetAll() 
         {
             var res = new ResponseModel<List<ProfileModel>>();
@@ -56,6 +58,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("GetUserById")]
+        [Authorize("1")]
         public IActionResult GetUser(int id)
         {
             var res = new ResponseModel<SignupModel>();
@@ -74,13 +77,13 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("EditUser")]
-        public IActionResult Edit(ProfileModel model)
+        [HttpPost("EditUser")]
+        public IActionResult Edit([FromForm]ProfileModel model)
         {
             var res = new ResponseModel<string>();
             if(ModelState.IsValid)
             {
-                var isSuccess = _user.UpdateUser(model);
+                var isSuccess = _user.UpdateUserProfile(model);
                 if(isSuccess)
                 {
                     res.IsSuccess = true;

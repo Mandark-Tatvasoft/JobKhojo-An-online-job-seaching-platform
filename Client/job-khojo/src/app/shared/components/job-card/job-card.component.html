@@ -1,51 +1,52 @@
 <mat-card class="mb-3 position-relative card p-3">
   <div *ngIf="isSeeker" class="position-absolute like-btn">
-    <button
-      mat-icon-button
-      *ngIf="!Job.isSaved && !isSavedJobPage"
-      (click)="saveJob(Job.jobId)"
-    >
+    <button mat-icon-button *ngIf="!job.isSaved" (click)="saveJob(job.jobId)">
       <mat-icon>bookmark_outline</mat-icon>
     </button>
-    <button mat-icon-button *ngIf="Job.isSaved">
+    <button mat-icon-button *ngIf="job.isSaved" (click)="unsaveJob(job.jobId)">
       <mat-icon>bookmark</mat-icon>
     </button>
   </div>
-  <mat-card-content (click)="openJob(Job.jobId)">
+  <mat-card-content (click)="openJob(job.jobId)">
     <div class="d-flex justify-content-between">
       <div>
-        <h6 class="fs-5 fw-medium">{{ Job.title }}</h6>
+        <h6 class="fs-5 fw-medium">{{ job.title }}</h6>
         <div class="p-2">
-          <p class="fs-6 mb-4">{{ Job.subtitle }}</p>
+          <p class="fs-6 mb-4">{{ job.subtitle }}</p>
           <div class="d-flex align-items-center mb-2">
             <div class="openings d-flex align-items-center ms-2 me-3">
               <mat-icon class="me-2">group</mat-icon
-              ><strong>{{ Job.openings }}</strong>
+              ><strong>{{ job.openings }}</strong>
             </div>
             |
             <div class="d-flex align-items-center ms-xxl-2 me-2">
               <mat-icon class="me-2">currency_rupee</mat-icon
-              ><strong>{{ Job.salary }}</strong>
+              ><strong>{{ job.salary }}</strong>
             </div>
             |
             <div class="d-flex align-items-center ms-2 me-3">
               <mat-icon class="me-2">laptop</mat-icon
-              ><strong>{{ getJobType(Job.jobType) }}</strong>
+              ><strong>{{ getJobType(job.jobType) }}</strong>
             </div>
             |
             <div class="d-flex align-items-center ms-2 me-3">
               <mat-icon class="me-2">place</mat-icon
-              ><strong>{{ getLocation(Job.location) }}</strong>
+              ><strong>{{ getLocation(job.location) }}</strong>
             </div>
           </div>
           <div class="openings mb-0" *ngIf="isRecruiter">
-            No. of Applicants: <strong>{{ Job.appliedBy }}</strong>
+            No. of Applicants: <strong>{{ job.appliedBy }}</strong>
           </div>
         </div>
       </div>
       <div class="d-flex align-items-center">
         <div *ngIf="isRecruiter">
-          <button mat-flat-button (click)="editJob(Job.jobId)">Edit</button>
+          <button mat-flat-button (click)="editJob(job.jobId)" class="me-2">
+            Edit
+          </button>
+          <button mat-flat-button color="warn" (click)="openDeleteDialog()">
+            Delete
+          </button>
         </div>
       </div>
     </div>

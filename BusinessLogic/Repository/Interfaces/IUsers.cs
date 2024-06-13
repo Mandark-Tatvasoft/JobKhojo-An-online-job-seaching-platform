@@ -15,6 +15,14 @@ namespace BusinessLogic.Repository.Interfaces
 
         public SignupModel GetUserById(int id);
 
-        public Boolean UpdateUser(ProfileModel model);
+        public List<RecruiterModel> GetRecruiters();
+
+        public bool AddUser(SignupModel model);
+
+        public bool DisableUser(int jobId);
+
+        public bool UpdateUserProfile(ProfileModel model);
+
+        public bool AdminEditUser(SignupModel model, int id);
     }
 }

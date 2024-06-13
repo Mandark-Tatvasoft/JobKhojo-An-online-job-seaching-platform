@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Location } from '../../core/models/location.model';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-jobs',
@@ -14,7 +16,11 @@ import { Location } from '../../core/models/location.model';
   styleUrl: './jobs.component.css',
 })
 export class JobsComponent {
-  constructor(private service: AdminService, private router: Router) {}
+  constructor(
+    private service: AdminService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   jobs: Job[] = [];
   locations: Location[] = [];
@@ -43,5 +49,11 @@ export class JobsComponent {
 
   getLocation(id: number) {
     return this.locations.find((e) => e.locationId == id)?.locationName;
+  }
+
+  openDeleteDialog(jobId: number | undefined) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: { jobId: jobId },
+    });
   }
 }

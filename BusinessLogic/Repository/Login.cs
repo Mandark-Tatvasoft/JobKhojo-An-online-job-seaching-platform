@@ -4,6 +4,7 @@ using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
 using Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ public class Login : ILogin
                     loggedInUser.UserId = user.UserId;
                     loggedInUser.Role = user.RoleId.ToString();
                     loggedInUser.Email = model.Email;
+                    loggedInUser.IsActive = user.IsActive;
                     return loggedInUser;
                 }
                 else
@@ -74,6 +76,7 @@ public class Login : ILogin
                 Resume = model.Resume,
                 AppliedJobs = new int[0],
                 SavedJobs = new int[0],
+                IsActive = true
             };
 
             try

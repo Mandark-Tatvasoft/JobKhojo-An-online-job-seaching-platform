@@ -35,11 +35,14 @@ public partial class User
     public string? CompanyName { get; set; }
 
     [Column(TypeName = "character varying")]
-    public string? Mobile { get; set; }
+    public string Mobile { get; set; } = null!;
 
     public int[]? AppliedJobs { get; set; }
 
     public int[]? SavedJobs { get; set; }
+
+    [Column("isActive")]
+    public bool IsActive { get; set; }
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Job> Jobs { get; set; } = new List<Job>();

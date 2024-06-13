@@ -1,3 +1,4 @@
+using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,8 @@ public class JobsController : ControllerBase
     {
         _jobs = jobs;
     }
+
+    #region Get
 
     [HttpGet("GetAllJobs")]
     public IActionResult GetAll()
@@ -75,48 +78,8 @@ public class JobsController : ControllerBase
         }
     }
 
-    [HttpGet("GetSavedJobs")]
-    public IActionResult GetSaved()
-    {
-        var res = new ResponseModel<List<JobModel>>();
-        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        var data = _jobs.GetSavedJobs(token);
-        if(data.Count != 0)
-        {
-            res.IsSuccess = true;
-            res.Data = data;
-            return Ok(res);
-        }
-        else
-        {
-            res.IsSuccess = false;
-            res.Message = "No saved Jobs found";
-            return Ok(res);
-        }
-    }
-
-    [HttpGet("GetAppliedJobs")]
-    public IActionResult GetApplied()
-    {
-        var res = new ResponseModel<List<JobModel>>();
-        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        var data = _jobs.GetAppliedJobs(token);
-        if (data.Count != 0)
-        {
-            res.IsSuccess = true;
-            res.Data = data;
-            return Ok(res);
-        }
-        else
-        {
-            res.IsSuccess = false;
-            res.Message = "No saved Jobs found";
-            return Ok(res);
-        }
-    }
-
     [HttpGet("GetJob")]
-    public IActionResult Get(int id)
+    public IActionResult GetJobById(int id)
     {
         var res = new ResponseModel<JobModel>();
         var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -134,8 +97,13 @@ public class JobsController : ControllerBase
         return Ok(res);
     }
 
+    #endregion
+
+    #region Edit
+
+    [Authorize("2")]
     [HttpPut("EditJob")]
-    public IActionResult Put(JobModel job)
+    public IActionResult EditJob(JobModel job)
     {
         var res = new ResponseModel<string>();
         if(ModelState.IsValid)
@@ -162,6 +130,30 @@ public class JobsController : ControllerBase
         }
     }
 
+    #endregion
+
+    [HttpDelete("DeleteJob")]
+    public IActionResult deleteJob(int id)
+    {
+        var res = new ResponseModel<string>();
+        var isSuccess = _jobs.DeleteJob(id);
+        if (isSuccess)
+        {
+            res.IsSuccess = true;
+            res.Message = "Job Deleted successfully";
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "There were some errors";
+            return BadRequest(res);
+        }
+    }
+
+    #region Save/Apply
+
+    [Authorize("3")]
     [HttpPut("ApplyForJob")]
     public IActionResult Apply(int jobId)
     {
@@ -183,6 +175,7 @@ public class JobsController : ControllerBase
         }
     }
 
+    [Authorize("3")]
     [HttpPut("SaveJob")]
     public IActionResult SaveJob(int jobId)
     {
@@ -203,4 +196,110 @@ public class JobsController : ControllerBase
             return BadRequest(res);
         }
     }
+
+    [Authorize("3")]
+    [HttpPut("UnsaveJob")]
+    public IActionResult UnsaveJob(int jobId)
+    {
+        var res = new ResponseModel<string>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(' ').Last();
+        var isSuccess = _jobs.UnsaveJob(jobId, token);
+
+        if (isSuccess)
+        {
+            res.IsSuccess = true;
+            res.Message = "Unsaved the job";
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "Something went wrong";
+            return BadRequest(res);
+        }
+    }
+
+    [Authorize("3")]
+    [HttpGet("GetAppliedJobs")]
+    public IActionResult GetApplied()
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetAppliedJobs(token);
+        if (data.Count != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "No saved Jobs found";
+            return Ok(res);
+        }
+    }
+
+    [Authorize("3")]
+    [HttpGet("GetSavedJobs")]
+    public IActionResult GetSaved()
+    {
+        var res = new ResponseModel<List<JobModel>>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetSavedJobs(token);
+        if (data.Count != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            res.Message = "No saved Jobs found";
+            return Ok(res);
+        }
+    }
+
+    [Authorize("3")]
+    [HttpGet("GetSavedJobsCount")]
+    public IActionResult GetSavedCount()
+    {
+        var res = new ResponseModel<int>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetSavedJobsCount(token);
+        if (data != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            return Ok(res);
+        }
+    }
+
+    [Authorize("3")]
+    [HttpGet("GetAppliedJobsCount")]
+    public IActionResult GetAppliedCount()
+    {
+        var res = new ResponseModel<int>();
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var data = _jobs.GetAppliedJobsCount(token);
+        if (data != 0)
+        {
+            res.IsSuccess = true;
+            res.Data = data;
+            return Ok(res);
+        }
+        else
+        {
+            res.IsSuccess = false;
+            return Ok(res);
+        }
+    }
+
+    #endregion
 }

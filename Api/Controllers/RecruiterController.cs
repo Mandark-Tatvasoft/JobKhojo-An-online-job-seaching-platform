@@ -2,6 +2,7 @@ using BusinessLogic.Repository;
 using BusinessLogic.Repository.Interfaces;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Api.Controllers;
 
@@ -10,16 +11,20 @@ namespace Api.Controllers;
 [Authorize("2")]
 public class RecruiterController : ControllerBase
 {
-    private readonly IRecruiter _recruiter;
-    public RecruiterController(IRecruiter recruiter)
+    private readonly IJobs _jobs;
+    private readonly IJwtService _jwtService;
+    public RecruiterController(IJobs jobs, IJwtService jwtService)
     {
-        _recruiter = recruiter;
+        _jobs = jobs;
+        _jwtService = jwtService;
     }
 
+    #region Get listed jobs
+
     [HttpGet("GetAllListedJobs")]
-    public IActionResult Get(int id)
+    public IActionResult GetListedJobs(int id)
     {
-        var jobs = _recruiter.GetAllListed(id);
+        var jobs = _jobs.GetAllListed(id);
         var res = new ResponseModel<List<JobModel>>();
 
         if (jobs.Count > 0)
@@ -34,14 +39,21 @@ public class RecruiterController : ControllerBase
         }
     }
 
+    #endregion
+
+    #region Add job
+
     [HttpPost("AddJob")]
-    public IActionResult Post(JobModel model)
+    public IActionResult AddJob(JobModel model)
     {
         var res = new ResponseModel<string>();
         if (ModelState.IsValid)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var IsSuccess = _recruiter.AddJob(model, token);
+            _jwtService.ValidateToken(token, out JwtSecurityToken validatedToken);
+            var userId = int.Parse(validatedToken.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            model.CreatedBy = userId;
+            var IsSuccess = _jobs.AddJob(model);
             if (IsSuccess)
             {
                 res.IsSuccess = true;
@@ -63,21 +75,5 @@ public class RecruiterController : ControllerBase
         }
     }
 
-    [HttpPut("EditJob")]
-    public IActionResult Put(JobModel model)
-    {
-        var res = new ResponseModel<string>();
-        var IsSuccess = _recruiter.EditJob(model);
-        if (IsSuccess)
-        {
-            res.IsSuccess = true;
-            res.Message = "Job edited successfully";
-        }
-        else
-        {
-            res.IsSuccess = false;
-            res.Message = "There is some error";
-        }
-        return Ok(res);
-    }
+    #endregion
 }
