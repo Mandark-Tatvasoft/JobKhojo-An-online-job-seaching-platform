@@ -1,6 +1,10 @@
 <div class="container mt-5">
   <h3 class="fw-bold">Your Applied jobs</h3>
   <div class="p-3">
-    <app-job-card *ngFor="let job of savedJobs" [job]="job"></app-job-card>
+    <app-job-card
+      *ngFor="let job of savedJobs"
+      [job]="job"
+      [isAppliedPage]="true"
+    ></app-job-card>
   </div>
 </div>

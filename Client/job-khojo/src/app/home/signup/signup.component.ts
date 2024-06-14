@@ -43,7 +43,7 @@ export class SignupComponent {
     username: '',
     password: '',
     confirmPassword: '',
-    role: 0,
+    roleId: 0,
     companyName: '',
     resume: '',
   };
@@ -87,22 +87,14 @@ export class SignupComponent {
       firstname: ['', [Validators.required, spaceValidator]],
       lastname: [''],
       mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
-      role: [0, [Validators.required, Validators.min(1)]],
+      roleId: [0, [Validators.required, Validators.min(1)]],
       companyName: ['', spaceValidator],
     });
   }
 
   handleSubmit() {
     if (this.signUpForm.valid) {
-      this.model.firstname = this.signUpForm.value.firstname;
-      this.model.lastname = this.signUpForm.value.lastname;
-      this.model.email = this.signUpForm.value.email;
-      this.model.role = this.signUpForm.value.role;
-      this.model.password = this.signUpForm.value.password;
-      this.model.confirmPassword = this.signUpForm.value.confirmPassword;
-      this.model.companyName = this.signUpForm.value.companyName;
-      this.model.mobile = this.signUpForm.value.mobile;
-      this.model.username = this.signUpForm.value.username;
+      this.model = <NewUser>this.signUpForm.value;
 
       this.authService.signup(this.model).subscribe((data) => {
         if (data.isSuccess) {

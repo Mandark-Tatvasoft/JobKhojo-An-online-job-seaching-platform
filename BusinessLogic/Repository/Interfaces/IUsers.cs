@@ -19,7 +19,7 @@ namespace BusinessLogic.Repository.Interfaces
 
         public bool AddUser(SignupModel model);
 
-        public bool DisableUser(int jobId);
+        public bool ToggleUserActive(int jobId);
 
         public bool UpdateUserProfile(ProfileModel model);
 

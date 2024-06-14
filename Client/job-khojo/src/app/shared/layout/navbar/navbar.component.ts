@@ -22,8 +22,11 @@ export class NavbarComponent {
   constructor(private router: Router, private service: SharedService) {}
 
   ngOnInit() {
-    this.getAppliedCount();
-    this.getSavedCount();
+    this.checkLogin();
+    if (this.isSeeker) {
+      this.getAppliedCount();
+      this.getSavedCount();
+    }
   }
 
   ngDoCheck() {

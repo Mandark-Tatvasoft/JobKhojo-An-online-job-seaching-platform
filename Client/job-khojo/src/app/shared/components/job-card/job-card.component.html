@@ -1,5 +1,5 @@
 <mat-card class="mb-3 position-relative card p-3">
-  <div *ngIf="isSeeker" class="position-absolute like-btn">
+  <div *ngIf="isSeeker && !isAppliedPage" class="position-absolute like-btn">
     <button mat-icon-button *ngIf="!job.isSaved" (click)="saveJob(job.jobId)">
       <mat-icon>bookmark_outline</mat-icon>
     </button>

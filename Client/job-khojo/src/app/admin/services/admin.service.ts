@@ -24,6 +24,7 @@ export class AdminService {
   getLocationUrl = 'https://localhost:7083/Locations/GetLocation?id=';
   addLocationUrl = 'https://localhost:7083/Admin/AddLocation';
   editLocationUrl = 'https://localhost:7083/Admin/EditLocation';
+  disableUserUrl = 'https://localhost:7083/Admin/ToggleUserActive?id=';
 
   getAllJobs() {
     return this.api.get(this.getAllJobsUrl);
@@ -79,5 +80,9 @@ export class AdminService {
 
   editLocation(model: Location) {
     return this.api.put(this.editLocationUrl, model);
+  }
+
+  disableUser(userId: number) {
+    return this.api.put(this.disableUserUrl + userId);
   }
 }

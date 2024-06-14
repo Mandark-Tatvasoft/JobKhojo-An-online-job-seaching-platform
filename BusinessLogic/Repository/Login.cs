@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using AutoMapper;
 using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
@@ -14,10 +15,12 @@ namespace BusinessLogic.Repository;
 public class Login : ILogin
 {
     private readonly AppDbContext _context;
+    private readonly IMapper _mapper;
 
-    public Login(AppDbContext context)
+    public Login(AppDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public UserModel LogIn(LoginModel model)
@@ -31,53 +34,25 @@ public class Login : ILogin
                 var user = _context.Users.FirstOrDefault(u => u.Email == model.Email && u.PasswordHashed == model.Password);
                 if (user != null)
                 {
-                    loggedInUser.UserName = user.Username;
-                    loggedInUser.UserId = user.UserId;
-                    loggedInUser.Role = user.RoleId.ToString();
-                    loggedInUser.Email = model.Email;
-                    loggedInUser.IsActive = user.IsActive;
-                    return loggedInUser;
-                }
-                else
-                {
-                    return loggedInUser;
+                    _mapper.Map(user, loggedInUser);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return loggedInUser;
             }
-
-
         }
-        else
-        {
-            return loggedInUser;
-        }
+        return loggedInUser;
     }
 
     public bool SignUp(SignupModel model)
     {
         if (model.Password == model.ConfirmPassword)
         {
-            if (model.Email == null || model.Password == null || model.Role == 0) return false;
+            if (model.Email == null || model.Password == null || model.RoleId == 0) return false;
 
-            var newUser = new User()
-            {
-                Username = model.Username,
-                PasswordHashed = model.Password,
-                Email = model.Email,
-                Firstname = model.Firstname,
-                Lastname = model.Lastname,
-                Mobile = model.Mobile,
-                RoleId = model.Role,
-                CompanyName = model.CompanyName,
-                Resume = model.Resume,
-                AppliedJobs = new int[0],
-                SavedJobs = new int[0],
-                IsActive = true
-            };
+            var newUser = new User() { IsActive = true };
+            _mapper.Map(model, newUser);
 
             try
             {
@@ -115,6 +90,7 @@ public class Authorize : Attribute, IAuthorizationFilter
 
         if (token == null || !_jwt.ValidateToken(token, out JwtSecurityToken jwtToken))
         {
+            context.Result = new UnauthorizedObjectResult("Unauthorized!");
             return;
         }
 
@@ -124,6 +100,7 @@ public class Authorize : Attribute, IAuthorizationFilter
 
         if (roleClaim == null)
         {
+            context.Result = new UnauthorizedObjectResult("Unauthorized!");
             return;
         }
 
@@ -131,6 +108,7 @@ public class Authorize : Attribute, IAuthorizationFilter
 
         if (roleClaim.Value != _role || _role == null)
         {
+            context.Result = new UnauthorizedObjectResult("Unauthorized!");
             return;
         }
     }

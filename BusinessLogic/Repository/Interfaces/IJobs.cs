@@ -8,7 +8,7 @@ public interface IJobs
 
     public List<JobModel> GetJobs(int limit, string token);
 
-    public List<JobModel> GetAllListed(int id);
+    public List<ListedJobsModel> GetAllListed(int id);
 
     public List<JobModel> SearchJobs(string title, int jobType, int location, string token);
 

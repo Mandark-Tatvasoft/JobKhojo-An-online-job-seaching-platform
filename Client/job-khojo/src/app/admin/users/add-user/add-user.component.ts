@@ -42,7 +42,7 @@ export class AddUserComponent {
     username: '',
     password: '',
     confirmPassword: '',
-    role: 0,
+    roleId: 0,
     companyName: '',
     resume: '',
   };
@@ -59,6 +59,8 @@ export class AddUserComponent {
 
   initializeForm() {
     this.userForm = this.fb.group({
+      firstname: ['', [Validators.required, spaceValidator]],
+      lastname: [''],
       email: [
         '',
         [
@@ -67,6 +69,7 @@ export class AddUserComponent {
           Validators.email,
         ],
       ],
+      mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
       username: [
         '',
         [Validators.required, Validators.minLength(3), spaceValidator],
@@ -82,25 +85,15 @@ export class AddUserComponent {
         ],
       ],
       confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
-      firstname: ['', [Validators.required, spaceValidator]],
-      lastname: [''],
-      mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
-      role: [0, [Validators.required, Validators.min(1)]],
+      roleId: [0, [Validators.required, Validators.min(1)]],
       companyName: ['', spaceValidator],
+      resume: [],
     });
   }
 
   handleSubmit() {
     if (this.userForm.valid) {
-      this.model.firstname = this.userForm.value.firstname;
-      this.model.lastname = this.userForm.value.lastname;
-      this.model.email = this.userForm.value.email;
-      this.model.role = this.userForm.value.role;
-      this.model.password = this.userForm.value.password;
-      this.model.confirmPassword = this.userForm.value.confirmPassword;
-      this.model.companyName = this.userForm.value.companyName;
-      this.model.mobile = this.userForm.value.mobile;
-      this.model.username = this.userForm.value.username;
+      this.model = <NewUser>this.userForm.value;
 
       this.service.addUser(this.model).subscribe((res) => {
         if (res.isSuccess) {

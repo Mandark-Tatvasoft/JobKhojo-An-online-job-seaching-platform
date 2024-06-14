@@ -63,7 +63,7 @@ namespace Api.Controllers
         {
             var res = new ResponseModel<SignupModel>();
             var data = _user.GetUserById(id);
-            if (data.Role != 0)
+            if (data.RoleId != 0)
             {
                 res.IsSuccess = true;
                 res.Data = data;

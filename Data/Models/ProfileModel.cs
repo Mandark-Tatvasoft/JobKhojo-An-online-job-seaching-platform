@@ -25,5 +25,7 @@ namespace Data.Models
 
         public IFormFile? ResumeFile { get; set; }
 
+        public bool? isActive { get; set; } 
+
     }
 }

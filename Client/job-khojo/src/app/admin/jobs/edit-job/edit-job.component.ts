@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ModelFormGroup } from '../../../core/models/form-type.model';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-edit-job',
@@ -26,6 +27,7 @@ import { ModelFormGroup } from '../../../core/models/form-type.model';
     MatSlideToggleModule,
     MatSelectModule,
     CommonModule,
+    NgxEditorModule,
   ],
   templateUrl: './edit-job.component.html',
   styleUrl: './edit-job.component.css',
@@ -33,7 +35,17 @@ import { ModelFormGroup } from '../../../core/models/form-type.model';
 export class EditJobComponent {
   editJobForm!: ModelFormGroup<Job>;
   job!: Job;
-
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
   jobTypes: JobType[] = [];
   locations: Location[] = [];
   recruiters: Recruiter[] = [];
@@ -76,7 +88,7 @@ export class EditJobComponent {
     this.service.getJob(this.jobId).subscribe((res) => {
       if (res.isSuccess) {
         this.editJobForm.patchValue(res.data);
-        this.job.jobId = res.data.jobId;
+        this.job = res.data;
       }
     });
   }
@@ -88,10 +100,12 @@ export class EditJobComponent {
     this.getLocations();
     this.getRecruiters();
     this.getJob();
+    this.editor = new Editor();
   }
 
   initializeForm() {
     this.editJobForm = this.fb.group({
+      jobId: [0],
       title: ['', [Validators.required, spaceValidator]],
       subtitle: [
         '',
@@ -113,6 +127,7 @@ export class EditJobComponent {
   handleSubmit() {
     if (this.editJobForm.valid) {
       this.job = <Job>this.editJobForm.value;
+      console.log(this.job);
 
       this.service.editJob(this.job).subscribe((res) => {
         if (res.isSuccess) {

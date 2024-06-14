@@ -42,7 +42,7 @@ export class EditUserComponent {
     username: '',
     password: '',
     confirmPassword: '',
-    role: 0,
+    roleId: 0,
     companyName: '',
     resume: '',
   };
@@ -66,7 +66,7 @@ export class EditUserComponent {
             firstname: res.data.firstname,
             lastname: res.data.lastname,
             mobile: res.data.mobile,
-            role: res.data.role.toString(),
+            roleId: res.data.roleId.toString(),
             companyName: res.data.companyName,
           });
         }
@@ -87,19 +87,14 @@ export class EditUserComponent {
       firstname: ['', [Validators.required, spaceValidator]],
       lastname: [''],
       mobile: ['', [Validators.required, Validators.pattern('[789]\\d{9}')]],
-      role: [0, [Validators.required, Validators.min(1)]],
+      roleId: [0, [Validators.required, Validators.min(1)]],
       companyName: ['', spaceValidator],
     });
   }
 
   handleSubmit() {
     if (this.userForm.valid) {
-      this.model.firstname = this.userForm.value.firstname;
-      this.model.lastname = this.userForm.value.lastname;
-      this.model.email = this.userForm.value.email;
-      this.model.role = this.userForm.value.role;
-      this.model.companyName = this.userForm.value.companyName;
-      this.model.mobile = this.userForm.value.mobile;
+      this.model = <NewUser>this.userForm.value;
 
       this.service.editUser(this.model, this.userId).subscribe((res) => {
         if (res.isSuccess) {

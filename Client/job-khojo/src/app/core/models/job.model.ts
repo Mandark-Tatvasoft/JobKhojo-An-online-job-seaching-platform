@@ -1,5 +1,7 @@
+import { SafeHtml } from '@angular/platform-browser';
+
 export class Job {
-  jobId?: number;
+  jobId!: number;
   title!: string;
   subtitle!: string;
   description!: string;

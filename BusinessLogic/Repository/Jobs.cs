@@ -1,3 +1,4 @@
+using AutoMapper;
 using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
@@ -11,16 +12,17 @@ public class Jobs : IJobs
 {
     private readonly AppDbContext _context;
     private readonly IJwtService _jwt;
-    public Jobs(AppDbContext context, IJwtService jwt)
+    private readonly IMapper _mapper;
+    public Jobs(AppDbContext context, IJwtService jwt, IMapper mapper)
     {
         _context = context;
         _jwt = jwt;
-
+        _mapper = mapper;
     }
 
     public List<JobModel> GetAllJobs(string token)
     {
-        var jobs = _context.Jobs.Where(j => j.IsActive == true).ToList();
+        var jobs = _context.Jobs.Where(j => j.IsActive == true && j.IsDeleted != true).ToList();
         var model = new List<JobModel>();
         int[] savedJobs = new int[0];
         _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
@@ -32,18 +34,8 @@ public class Jobs : IJobs
 
         foreach (var job in jobs)
         {
-            model.Add(new JobModel
-            {
-                JobId = job.JobId,
-                Title = job.Title,
-                Subtitle = job.Subtitle,
-                Description = job.Description,
-                Openings = job.Openings,
-                Salary = job.Salary,
-                JobType = job.JobType,
-                Location = job.Location,
-                isSaved = savedJobs!.Contains(job.JobId),
-            });
+            var newModel = new JobModel() { isSaved = savedJobs!.Contains(job.JobId) };
+            model.Add(_mapper.Map(job, newModel));
         }
 
         return model;
@@ -52,7 +44,7 @@ public class Jobs : IJobs
 
     public List<JobModel> GetJobs(int limit, string token)
     {
-        var jobs = _context.Jobs.Where(j => j.IsActive == true).Take(limit).ToList();
+        var jobs = _context.Jobs.Where(j => j.IsActive == true && j.IsDeleted != true).Take(limit).ToList();
         var model = new List<JobModel>();
         int[] savedJobs = new int[0];
         _jwt.ValidateToken(token, out JwtSecurityToken validatedToken);
@@ -64,44 +56,39 @@ public class Jobs : IJobs
 
         foreach (var job in jobs)
         {
-            model.Add(new JobModel
-            {
-                JobId = job.JobId,
-                Title = job.Title,
-                Subtitle = job.Subtitle,
-                Description = job.Description,
-                Openings = job.Openings,
-                Salary = job.Salary,
-                Location = job.Location,
-                JobType = job.JobType,
-                isSaved = savedJobs!.Contains(job.JobId),
-            });
+            var newModel = new JobModel() { isSaved = savedJobs!.Contains(job.JobId) };
+            model.Add(_mapper.Map(job, newModel));
         }
 
         return model;
     }
 
-    public List<JobModel> GetAllListed(int id)
+    public List<ListedJobsModel> GetAllListed(int id)
     {
-        var model = new List<JobModel>();
+        var model = new List<ListedJobsModel>();
+
         try
         {
-            var list = _context.Jobs.Where(x => x.CreatedBy == id).ToList();
-            foreach (var job in list)
+            var list = _context.Jobs.Where(x => x.CreatedBy == id && x.IsDeleted != true).ToList();
+            var users = _context.Users.ToList();
+
+            foreach (var item in list)
             {
-                model.Add(new JobModel
+                var job = new JobModel();
+                _mapper.Map(item, job);
+
+                var appliedUsers = users.Where(x => item.AppliedBy.Contains(x.UserId)).ToList();
+                var appUsers = new List<ProfileModel>();
+                foreach(var user in appliedUsers)
                 {
-                    JobId = job.JobId,
-                    Title = job.Title,
-                    Description = job.Description,
-                    Openings = job.Openings,
-                    Salary = job.Salary,
-                    Location = job.Location,
-                    Subtitle = job.Subtitle,
-                    JobType = job.JobType,
-                    CreatedBy = job.CreatedBy,
-                    IsActive = job.IsActive,
-                    AppliedBy = job.AppliedBy == null ? 0 : job.AppliedBy.Count(),
+                    var newItem = new ProfileModel();
+                    appUsers.Add(_mapper.Map(user, newItem));
+                }
+
+                model.Add(new ListedJobsModel
+                {
+                    Job = job,
+                    AppliedUsers = appUsers
                 });
 
             }
@@ -115,7 +102,7 @@ public class Jobs : IJobs
 
     public List<JobModel> SearchJobs(string title, int jobType, int location, string token)
     {
-        var jobs = _context.Jobs.Where(j => j.IsActive == true).ToList();
+        var jobs = _context.Jobs.Where(j => j.IsActive == true && j.IsDeleted != true).ToList();
         if(title != null && title != string.Empty)
         {
             jobs = jobs.Where(j => j.Title.ToLower().Contains(title.ToLower()) || j.Subtitle.ToLower().Contains(title.ToLower())).ToList();
@@ -142,18 +129,8 @@ public class Jobs : IJobs
 
         foreach (var job in jobs)
         {
-            model.Add(new JobModel
-            {
-                JobId = job.JobId,
-                Title = job.Title,
-                Subtitle = job.Subtitle,
-                Description = job.Description,
-                Openings = job.Openings,
-                Salary = job.Salary,
-                Location = job.Location,
-                JobType = job.JobType,
-                isSaved = savedJobs!.Contains(job.JobId),
-            });
+            var newJob = new JobModel() { isSaved = savedJobs!.Contains(job.JobId) };
+            model.Add(_mapper.Map(job, newJob));
         }
 
         return model;
@@ -169,24 +146,13 @@ public class Jobs : IJobs
             var savedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).SavedJobs;
             if(savedJobs != null)
             {
-                var jobs = _context.Jobs.Where(j => savedJobs.Contains(j.JobId)).ToList();
+                var jobs = _context.Jobs.Where(j => savedJobs.Contains(j.JobId) && j.IsDeleted != true).ToList();
                 if(jobs != null)
                 {
                     foreach (var job in jobs)
                     {
-                        model.Add(new JobModel
-                        {
-                            JobId = job.JobId,
-                            Title = job.Title,
-                            Description = job.Description,
-                            Openings = job.Openings,
-                            Salary = job.Salary,
-                            Location = job.Location,
-                            JobType = job.JobType,
-                            Subtitle = job.Subtitle,
-                            IsActive = job.IsActive,
-                            isSaved = savedJobs!.Contains(job.JobId),
-                        });
+                        var newJob = new JobModel() { isSaved = savedJobs!.Contains(job.JobId) };
+                        model.Add(_mapper.Map(job, newJob));
                     }
                 }
 
@@ -205,24 +171,13 @@ public class Jobs : IJobs
             var appliedJobs = _context.Users.FirstOrDefault(u => u.UserId == userId).AppliedJobs;
             if (appliedJobs != null)
             {
-                var jobs = _context.Jobs.Where(j => appliedJobs.Contains(j.JobId)).ToList();
+                var jobs = _context.Jobs.Where(j => appliedJobs.Contains(j.JobId) && j.IsDeleted != true).ToList();
                 if (jobs != null)
                 {
                     foreach (var job in jobs)
                     {
-                        model.Add(new JobModel
-                        {
-                            JobId = job.JobId,
-                            Title = job.Title,
-                            Description = job.Description,
-                            Openings = job.Openings,
-                            Salary = job.Salary,
-                            Location = job.Location,
-                            JobType = job.JobType,
-                            Subtitle = job.Subtitle,
-                            IsActive = job.IsActive,
-                            isSaved = appliedJobs.Contains(job.JobId),
-                        });
+                        var newJob = new JobModel();
+                        model.Add(_mapper.Map(job, newJob));
                     }
                 }
 
@@ -259,21 +214,11 @@ public class Jobs : IJobs
     public JobModel GetJob(int id, string token)
     {
         var model = new JobModel();
-        var job = _context.Jobs.FirstOrDefault(x => x.JobId == id);
+        var job = _context.Jobs.FirstOrDefault(x => x.JobId == id && x.IsDeleted != true);
 
         if (job != null)
         {
-            model.JobId = job.JobId;
-            model.Title = job.Title;
-            model.Subtitle = job.Subtitle;
-            model.Description = job.Description;
-            model.Openings = job.Openings;
-            model.CreatedBy = job.CreatedBy;
-            model.Salary = job.Salary;
-            model.Location = job.Location;
-            model.JobType = job.JobType;
-            model.IsActive = job.IsActive;
-            model.Openings = job.Openings;
+            _mapper.Map(job, model);
         }
 
         if (token != null)
@@ -299,19 +244,8 @@ public class Jobs : IJobs
 
     public bool AddJob(JobModel model)
     {
-        var newJob = new Job()
-        {
-            IsActive = model.IsActive,
-            Title = model.Title,
-            Subtitle = model.Subtitle,
-            Openings = model.Openings,
-            Salary = model.Salary,
-            JobType = model.JobType,
-            Location = model.Location,
-            CreatedBy = model.CreatedBy,
-            Description = model.Description,
-            AppliedBy = new int[0],
-        };
+        var newJob = new Job() { AppliedBy = new int[0] };
+        _mapper.Map(model, newJob);
 
         try
         {
@@ -332,15 +266,7 @@ public class Jobs : IJobs
         var job = _context.Jobs.FirstOrDefault(j => j.JobId == model.JobId);
         if (job != null)
         {
-            job.Title = model.Title;
-            job.Description = model.Description;
-            job.Openings = model.Openings;
-            job.IsActive = model.IsActive;
-            job.Subtitle = model.Subtitle;
-            job.Salary = model.Salary;
-            job.JobType = model.JobType;
-            job.Location = model.Location;
-            job.CreatedBy = model.CreatedBy;
+            _mapper.Map(model, job);
 
             try
             {
@@ -419,7 +345,10 @@ public class Jobs : IJobs
                 {
                     savedJobs.Add(item);
                 }
-                savedJobs.Add(jobId);
+                if(!savedJobs.Contains(jobId))
+                {
+                    savedJobs.Add(jobId);
+                }
                 user.SavedJobs = savedJobs.ToArray();
 
                 try
@@ -514,11 +443,8 @@ public class Jobs : IJobs
         {
             foreach (var type in types)
             {
-                model.Add(new JobTypeModel
-                {
-                    JobTypeId = type.Id,
-                    JobType = type.JobType1
-                });
+                var newJobType = new JobTypeModel();
+                model.Add(_mapper.Map(type, newJobType));
             }
         }
 

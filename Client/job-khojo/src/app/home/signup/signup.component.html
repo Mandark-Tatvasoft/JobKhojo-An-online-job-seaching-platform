@@ -104,14 +104,14 @@
             </mat-form-field>
             <mat-form-field class="form-input mb-2 col-md-6">
               <mat-label>Role</mat-label>
-              <mat-select name="role" formControlName="role" #role>
+              <mat-select name="roleId" formControlName="roleId" #role>
                 <mat-option value="1">Admin</mat-option>
                 <mat-option value="2">Recruiter</mat-option>
                 <mat-option value="3">Job-seeker</mat-option>
               </mat-select>
-              @if (signUpForm.get('role')?.hasError('required')) {
+              @if (signUpForm.get('roleId')?.hasError('required')) {
               <mat-error>Please select a role</mat-error>
-              } @if (signUpForm.get('role')?.hasError('min')) {
+              } @if (signUpForm.get('roleId')?.hasError('min')) {
               <mat-error>Please select a role</mat-error>
               }
             </mat-form-field>

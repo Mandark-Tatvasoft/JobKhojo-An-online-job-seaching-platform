@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Repository.Interfaces;
+﻿using AutoMapper;
+using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
 using Data.Models;
@@ -17,13 +18,15 @@ namespace BusinessLogic.Repository
     {
         private readonly AppDbContext _context;
         private readonly IJwtService _jwt;
+        private readonly IMapper _mapper;
 
         private string contentPath = @"D:\Projects\JobKhojo\Client\job-khojo\src\assets";
 
-        public Users(AppDbContext context, IJwtService jwt)
+        public Users(AppDbContext context, IJwtService jwt, IMapper mapper)
         {
             _context = context;
             _jwt = jwt;
+            _mapper = mapper;
         }
 
         public List<ProfileModel> GetUsers()
@@ -34,15 +37,8 @@ namespace BusinessLogic.Repository
             {
                 foreach(var user in users)
                 {
-                    model.Add(new ProfileModel
-                    {
-                        Email = user.Email,
-                        UserId = user.UserId,
-                        Firstname = user.Firstname,
-                        Lastname = user.Lastname,
-                        Username = user.Username,
-                        Mobile = user.Mobile
-                    });
+                    var newUser = new ProfileModel();
+                    model.Add(_mapper.Map(user, newUser));
                 }
             }
 
@@ -61,13 +57,7 @@ namespace BusinessLogic.Repository
                     var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
                     if (user != null)
                     {
-                        model.Username = user.Username;
-                        model.UserId = user.UserId;
-                        model.Firstname = user.Firstname;
-                        model.Lastname = user.Lastname;
-                        model.Email = user.Email;
-                        model.Mobile = user.Mobile;
-                        model.Resume = user.Resume!;
+                        _mapper.Map(user, model);
                     }
                 }
             }
@@ -81,12 +71,7 @@ namespace BusinessLogic.Repository
             var user = _context.Users.FirstOrDefault(u => u.UserId == id);
             if (user != null)
             {
-                model.Firstname = user.Firstname;
-                model.Lastname = user.Lastname;
-                model.Email = user.Email;
-                model.Mobile = user.Mobile;
-                model.Role = user.RoleId;
-                model.CompanyName = user.CompanyName;
+                _mapper.Map(user, model);
             }
             return model;
         }
@@ -99,11 +84,8 @@ namespace BusinessLogic.Repository
             {
                 foreach (var recruiter in recruiters)
                 {
-                    model.Add(new RecruiterModel
-                    {
-                        UserId = recruiter.UserId,
-                        CompanyName = recruiter.CompanyName
-                    });
+                    var newRecruiter = new RecruiterModel();
+                    model.Add(_mapper.Map(recruiter, newRecruiter));
                 }
             }
             return model;
@@ -115,18 +97,11 @@ namespace BusinessLogic.Repository
             {
                 var newUser = new User()
                 {
-                    Username = model.Username,
-                    Email = model.Email,
-                    Firstname = model.Firstname,
-                    Lastname = model.Lastname,
-                    PasswordHashed = model.Password,
-                    Mobile = model.Mobile,
-                    RoleId = model.Role,
-                    CompanyName = model.CompanyName,
                     AppliedJobs = new int[0],
                     SavedJobs = new int[0],
                     IsActive = true
                 };
+                _mapper.Map(model, newUser);
 
                 try
                 {
@@ -144,12 +119,12 @@ namespace BusinessLogic.Repository
             else return false;
         }
 
-        public bool DisableUser(int userId)
+        public bool ToggleUserActive(int userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user != null) 
             { 
-                user.IsActive = false;
+                user.IsActive = !user.IsActive;
 
                 try
                 {
@@ -171,12 +146,7 @@ namespace BusinessLogic.Repository
             var user = _context.Users.FirstOrDefault(u => u.UserId == model.UserId);
             if (user != null)
             {
-                user.Resume = model.Resume != null || model.Resume != "" ? model.Resume : user.Resume;
-                user.Username = model.Username;
-                user.Email = model.Email;
-                user.Mobile = model.Mobile;
-                user.Firstname = model.Firstname;
-                user.Lastname = model.Lastname;
+                _mapper.Map(model, user);
             }
 
             else
@@ -221,12 +191,8 @@ namespace BusinessLogic.Repository
             var user = _context.Users.FirstOrDefault(u => u.UserId == id);
             if (user != null)
             {
-                user.Email = model.Email;
-                user.Mobile = model.Mobile;
-                user.Firstname = model.Firstname;
-                user.Lastname = model.Lastname;
-                user.RoleId = model.Role;
-                user.CompanyName = model.CompanyName;
+                _mapper.Map(model, user);
+
                 try
                 {
                     _context.SaveChanges();

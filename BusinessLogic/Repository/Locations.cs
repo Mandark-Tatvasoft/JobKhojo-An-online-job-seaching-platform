@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Repository.Interfaces;
+﻿using AutoMapper;
+using BusinessLogic.Repository.Interfaces;
 using Data.ApplicationDbContext;
 using Data.Data;
 using Data.Models;
@@ -13,26 +14,25 @@ namespace BusinessLogic.Repository
     public class Locations : ILocations
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public Locations(AppDbContext context)
+        public Locations(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public List<LocationModel> GetAllLocations()
         {
-            var locations = _context.Locations.ToList().OrderBy(l => l.Location1);
+            var locations = _context.Locations.ToList().OrderBy(l => l.Location1).ToList();
             var model = new List<LocationModel>();
 
             if(locations.Count() != 0) 
             {
                 foreach (var location in locations)
                 {
-                    model.Add(new LocationModel
-                    {
-                        LocationId = location.Id,
-                        LocationName = location.Location1
-                    });
+                    var newLocation = new LocationModel();
+                    model.Add(_mapper.Map(location, newLocation));
                 }
             }
 
@@ -46,8 +46,7 @@ namespace BusinessLogic.Repository
 
             if(location != null)
             {
-                model.LocationId = location.Id;
-                model.LocationName = location.Location1;
+                _mapper.Map(location, model);
             }
             return model;
         }

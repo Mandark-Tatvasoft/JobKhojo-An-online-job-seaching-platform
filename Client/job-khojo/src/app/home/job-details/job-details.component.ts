@@ -9,6 +9,7 @@ import { JobType } from '../../core/models/job-type.model';
 import { Location } from '../../core/models/location.model';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-job-details',
@@ -35,7 +36,8 @@ export class JobDetailsComponent {
     private service: HomeService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer
   ) {}
 
   getJob() {
@@ -98,5 +100,9 @@ export class JobDetailsComponent {
       localStorage.setItem('path', this.router.url);
       this.router.navigate(['login']);
     }
+  }
+
+  getHtml() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.job.description);
   }
 }

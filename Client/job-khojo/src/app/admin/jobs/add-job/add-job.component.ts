@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Recruiter } from '../../../core/models/recruiter.model';
 import { ModelFormGroup } from '../../../core/models/form-type.model';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-add-job',
@@ -26,6 +27,7 @@ import { ModelFormGroup } from '../../../core/models/form-type.model';
     MatSlideToggleModule,
     MatSelectModule,
     CommonModule,
+    NgxEditorModule,
   ],
   templateUrl: './add-job.component.html',
   styleUrl: './add-job.component.css',
@@ -33,7 +35,17 @@ import { ModelFormGroup } from '../../../core/models/form-type.model';
 export class AddJobComponent {
   addJobForm!: ModelFormGroup<Job>;
   job!: Job;
-
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
   jobTypes: JobType[] = [];
   locations: Location[] = [];
   recruiters: Recruiter[] = [];
@@ -74,10 +86,12 @@ export class AddJobComponent {
     this.getJobTypes();
     this.getLocations();
     this.getRecruiters();
+    this.editor = new Editor();
   }
 
   initializeForm() {
     this.addJobForm = this.fb.group({
+      jobId: [0],
       title: ['', [Validators.required, spaceValidator]],
       subtitle: [
         '',

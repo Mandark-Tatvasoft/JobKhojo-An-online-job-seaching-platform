@@ -25,7 +25,7 @@ public class RecruiterController : ControllerBase
     public IActionResult GetListedJobs(int id)
     {
         var jobs = _jobs.GetAllListed(id);
-        var res = new ResponseModel<List<JobModel>>();
+        var res = new ResponseModel<List<ListedJobsModel>>();
 
         if (jobs.Count > 0)
         {

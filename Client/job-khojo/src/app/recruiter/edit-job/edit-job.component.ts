@@ -18,6 +18,9 @@ import { JobType } from '../../core/models/job-type.model';
 import { Location } from '../../core/models/location.model';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
+import { SafeHtml } from '@angular/platform-browser';
+import { ModelFormGroup } from '../../core/models/form-type.model';
 
 @Component({
   selector: 'app-edit-job',
@@ -30,22 +33,26 @@ import { MatSelectModule } from '@angular/material/select';
     MatSlideToggleModule,
     CommonModule,
     MatSelectModule,
+    NgxEditorModule,
   ],
   templateUrl: './edit-job.component.html',
   styleUrl: './edit-job.component.css',
 })
 export class EditJobComponent {
   id: string | null = '0';
-  editJobForm!: FormGroup<{
-    title: FormControl<string | null>;
-    subtitle: FormControl<string | null>;
-    description: FormControl<string | null>;
-    openings: FormControl<number | null>;
-    salary: FormControl<number | null>;
-    jobType: FormControl<number | null>;
-    location: FormControl<number | null>;
-    isActive: FormControl<boolean | null>;
-  }>;
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  editJobForm!: ModelFormGroup<Job>;
   job!: Job;
   jobTypes: JobType[] = [];
   locations: Location[] = [];
@@ -59,39 +66,42 @@ export class EditJobComponent {
     this.initializeForm();
   }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
+  getJobTypes() {
     this.service.getJobTypes().subscribe((res) => {
       if (res.isSuccess) {
         this.jobTypes = res.data;
       }
     });
+  }
 
+  getLocations() {
     this.service.getLocations().subscribe((res) => {
       if (res.isSuccess) {
         this.locations = res.data;
       }
     });
+  }
 
+  fetchJob() {
     this.service.getJob(this.id).subscribe((res) => {
       this.job = res.data;
 
-      this.editJobForm.patchValue({
-        title: this.job.title,
-        description: this.job.description,
-        openings: this.job.openings,
-        isActive: this.job.isActive,
-        subtitle: this.job.subtitle,
-        location: this.job.location,
-        jobType: this.job.jobType,
-        salary: this.job.salary,
-      });
+      this.editJobForm.patchValue(res.data);
     });
+  }
+
+  ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.editor = new Editor();
+
+    this.getJobTypes();
+    this.getLocations();
+    this.fetchJob();
   }
 
   initializeForm() {
     this.editJobForm = this.fb.group({
+      jobId: [0],
       title: ['', [Validators.required, spaceValidator]],
       subtitle: ['', [Validators.required, spaceValidator]],
       description: ['', [Validators.required, spaceValidator]],
@@ -99,41 +109,23 @@ export class EditJobComponent {
       salary: [0, [Validators.required, Validators.min(1)]],
       jobType: [0, [Validators.required, Validators.min(1)]],
       location: [0, [Validators.required, Validators.min(1)]],
+      createdBy: [0],
       isActive: [true],
     });
   }
 
   handleSubmit() {
     if (this.editJobForm.valid) {
-      this.job.title = this.editJobForm.value.title
-        ? this.editJobForm.value.title
-        : '';
-      this.job.description = this.editJobForm.value.description
-        ? this.editJobForm.value.description
-        : '';
-      this.job.openings = this.editJobForm.value.openings
-        ? this.editJobForm.value.openings
-        : 0;
-      this.job.isActive = this.editJobForm.value.isActive
-        ? this.editJobForm.value.isActive
-        : true;
-      this.job.location = this.editJobForm.value.location
-        ? this.editJobForm.value.location
-        : 0;
-      this.job.jobType = this.editJobForm.value.jobType
-        ? this.editJobForm.value.jobType
-        : 0;
-      this.job.salary = this.editJobForm.value.salary
-        ? this.editJobForm.value.salary
-        : 0;
-      (this.job.subtitle = this.editJobForm.value.subtitle
-        ? this.editJobForm.value.subtitle
-        : ''),
-        this.service.editJob(this.job).subscribe((res) => {
-          if (res.isSuccess) {
-            this.router.navigate(['recruiter']);
-          }
-        });
+      this.job = <Job>this.editJobForm.value;
+      this.service.editJob(this.job).subscribe((res) => {
+        if (res.isSuccess) {
+          this.router.navigate(['recruiter']);
+        }
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
   }
 }

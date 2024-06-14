@@ -26,7 +26,7 @@ public class SignupModel
     public string? ConfirmPassword { get; set; }
 
     [Required(ErrorMessage = "Role is required")]
-    public int? Role { get; set; }
+    public int? RoleId { get; set; }
 
     public string? CompanyName { get; set; }
 

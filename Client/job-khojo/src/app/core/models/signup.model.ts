@@ -6,7 +6,7 @@ export interface NewUser {
   username: string;
   password: string;
   confirmPassword: string;
-  role: number;
+  roleId: number;
   companyName: string;
   resume: string;
 }

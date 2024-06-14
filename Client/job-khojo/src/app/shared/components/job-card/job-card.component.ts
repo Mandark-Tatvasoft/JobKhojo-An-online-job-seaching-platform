@@ -20,6 +20,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 })
 export class JobCardComponent {
   @Input() job!: Job;
+  @Input() isAppliedPage: boolean = false;
 
   isRecruiter: boolean = false;
   isSeeker: boolean = true;
@@ -85,7 +86,11 @@ export class JobCardComponent {
 
   saveJob(jobId: number | undefined) {
     if (localStorage.getItem('userid')) {
-      this.service.saveJob(jobId).subscribe();
+      this.service.saveJob(jobId).subscribe((res) => {
+        if (res.isSuccess) {
+          this.job.isSaved = true;
+        }
+      });
     } else {
       this.router.navigate(['login']);
     }

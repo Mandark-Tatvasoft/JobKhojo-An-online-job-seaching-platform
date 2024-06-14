@@ -132,6 +132,8 @@ public class JobsController : ControllerBase
 
     #endregion
 
+    #region Delete
+
     [HttpDelete("DeleteJob")]
     public IActionResult deleteJob(int id)
     {
@@ -150,6 +152,8 @@ public class JobsController : ControllerBase
             return BadRequest(res);
         }
     }
+
+    #endregion
 
     #region Save/Apply
 

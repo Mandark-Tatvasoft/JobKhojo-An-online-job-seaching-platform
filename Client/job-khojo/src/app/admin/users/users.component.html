@@ -13,6 +13,7 @@
           <th>Lastname</th>
           <th>Email</th>
           <th>Mobile no.</th>
+          <th>Active?</th>
           <th></th>
         </tr>
       </thead>
@@ -24,6 +25,12 @@
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.mobile }}</td>
+          <td>
+            <mat-slide-toggle
+              [(ngModel)]="user.isActive"
+              (change)="disableUser(user.userId)"
+            ></mat-slide-toggle>
+          </td>
           <td class="text-end">
             <button mat-flat-button (click)="editUser(user.userId)">
               Edit

@@ -1,0 +1,13 @@
+.applied-users {
+  box-shadow: none;
+}
+.job-card {
+  cursor: pointer;
+}
+.elevate {
+  z-index: 10;
+}
+.button-container {
+  top: 70px;
+  right: 20px;
+}

@@ -5,4 +5,5 @@ export interface Userdata {
   firstname: string;
   lastname: string;
   mobile: string;
+  isActive?: boolean;
 }

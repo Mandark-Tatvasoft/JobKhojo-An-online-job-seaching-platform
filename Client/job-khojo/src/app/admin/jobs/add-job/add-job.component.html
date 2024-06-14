@@ -80,27 +80,30 @@
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">
           <mat-label>Recruiter</mat-label>
-          <mat-select name="recruiter" formControlName="recruiter">
+          <mat-select name="createdBy" formControlName="createdBy">
             <mat-option *ngFor="let item of recruiters" [value]="item.userId">{{
               item.companyName
             }}</mat-option>
           </mat-select>
-          @if (addJobForm.get('recruiter')?.hasError('min')) {
+          @if (addJobForm.get('createdBy')?.hasError('min')) {
           <mat-error>please select the location of job</mat-error>
           }
         </mat-form-field>
-        <mat-form-field class="form-input mb-2 col-12">
-          <mat-label>Description</mat-label>
-          <textarea
-            matInput
-            name="description"
+        <div class="mb-5 col-12">
+          <mat-label>Desctiption</mat-label>
+          <ngx-editor-menu
+            [editor]="editor"
+            [toolbar]="toolbar"
+          ></ngx-editor-menu>
+          <ngx-editor
+            [editor]="editor"
             formControlName="description"
-          ></textarea>
+            placeholder="Write your description here..."
+          ></ngx-editor>
           @if (addJobForm.get('description')?.hasError('required')) {
           <mat-error>Description is required</mat-error>
           }
-        </mat-form-field>
-        <span></span>
+        </div>
         <p>
           <mat-slide-toggle
             name="isActive"

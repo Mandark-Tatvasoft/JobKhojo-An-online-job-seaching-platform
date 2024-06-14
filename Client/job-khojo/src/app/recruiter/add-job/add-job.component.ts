@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { JobType } from '../../core/models/job-type.model';
 import { CommonModule } from '@angular/common';
 import { ModelFormGroup } from '../../core/models/form-type.model';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-edit-job',
@@ -31,6 +32,7 @@ import { ModelFormGroup } from '../../core/models/form-type.model';
     MatSlideToggleModule,
     MatSelectModule,
     CommonModule,
+    NgxEditorModule,
   ],
   templateUrl: './add-job.component.html',
   styleUrl: './add-job.component.css',
@@ -38,7 +40,17 @@ import { ModelFormGroup } from '../../core/models/form-type.model';
 export class AddJobComponent {
   addJobForm!: ModelFormGroup<Job>;
   job!: Job;
-
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
   jobTypes: JobType[] = [];
   locations: Location[] = [];
 
@@ -62,10 +74,13 @@ export class AddJobComponent {
         this.locations = res.data;
       }
     });
+
+    this.editor = new Editor();
   }
 
   initializeForm() {
     this.addJobForm = this.fb.group({
+      jobId: [0],
       title: ['', [Validators.required, spaceValidator]],
       subtitle: ['', [Validators.required, spaceValidator]],
       description: ['', [Validators.required, spaceValidator]],
@@ -80,30 +95,7 @@ export class AddJobComponent {
 
   handleSubmit() {
     if (this.addJobForm.valid) {
-      this.job.title = this.addJobForm.value.title
-        ? this.addJobForm.value.title
-        : '';
-      this.job.description = this.addJobForm.value.description
-        ? this.addJobForm.value.description
-        : '';
-      this.job.openings = this.addJobForm.value.openings
-        ? this.addJobForm.value.openings
-        : 0;
-      this.job.isActive = this.addJobForm.value.isActive
-        ? this.addJobForm.value.isActive
-        : true;
-      this.job.location = this.addJobForm.value.location
-        ? this.addJobForm.value.location
-        : 0;
-      this.job.jobType = this.addJobForm.value.jobType
-        ? this.addJobForm.value.jobType
-        : 0;
-      this.job.salary = this.addJobForm.value.salary
-        ? this.addJobForm.value.salary
-        : 0;
-      this.job.subtitle = this.addJobForm.value.subtitle
-        ? this.addJobForm.value.subtitle
-        : '';
+      this.job = <Job>this.addJobForm.value;
 
       this.service.addJob(this.job).subscribe((res) => {
         if (res.isSuccess) {

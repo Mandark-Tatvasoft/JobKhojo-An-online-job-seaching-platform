@@ -11,7 +11,6 @@ import {
 } from '@angular/forms';
 import { Login } from '../../core/models/signin.model';
 import { User } from '../../core/models/user.model';
-import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -34,7 +33,7 @@ export class LoginComponent {
   user: User = {
     email: '',
     userId: 0,
-    role: 0,
+    roleId: 0,
     userName: '',
     token: '',
   };
@@ -42,7 +41,6 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private service: AuthService,
-    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -71,7 +69,7 @@ export class LoginComponent {
             localStorage.removeItem('path');
             this.router.navigate([path.slice(1, path.length)]);
           } else {
-            switch (res.data.role) {
+            switch (res.data.roleId) {
               case '1':
                 this.router.navigate(['admin']);
                 return;
@@ -83,10 +81,6 @@ export class LoginComponent {
                 return;
             }
           }
-        } else {
-          this.toastr.error(res.message, '', {
-            timeOut: 2000,
-          });
         }
       });
     }
@@ -97,7 +91,7 @@ export class LoginComponent {
   }
 
   setUser() {
-    localStorage.setItem('role', this.user.role.toString());
+    localStorage.setItem('role', this.user.roleId.toString());
     localStorage.setItem('userid', this.user.userId.toString());
     localStorage.setItem('jwtToken', this.user.token);
   }

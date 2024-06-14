@@ -23,32 +23,35 @@
   <mat-card class="p-4 job-desc">
     <mat-card-content>
       <div class="mb-4">
-        <div class="d-flex align-items-center ms-2 me-3 mb-2">
-          <mat-icon class="me-2">place</mat-icon>
-          <div class="me-2"><strong>Location :</strong></div>
-          {{ getLocation(job.location) }}
-        </div>
+        <p class="fw-bold fs-4">Description:</p>
+        <div class="p-3">
+          <div class="d-flex align-items-center ms-2 me-3 mb-2">
+            <mat-icon class="me-2">place</mat-icon>
+            <div class="me-2"><strong>Location :</strong></div>
+            {{ getLocation(job.location) }}
+          </div>
 
-        <div class="d-flex align-items-center ms-2 me-2 mb-2">
-          <mat-icon class="me-2">currency_rupee</mat-icon>
-          <div class="me-2"><strong>Salary :</strong></div>
-          {{ job.salary / 1000 }}K / annum
-        </div>
+          <div class="d-flex align-items-center ms-2 me-2 mb-2">
+            <mat-icon class="me-2">currency_rupee</mat-icon>
+            <div class="me-2"><strong>Salary :</strong></div>
+            {{ job.salary / 1000 }}K / annum
+          </div>
 
-        <div class="d-flex align-items-center ms-2 me-3 mb-2">
-          <mat-icon class="me-2">laptop</mat-icon>
-          <div class="me-2"><strong>Job Type: </strong></div>
-          {{ getJobType(job.jobType) }}
+          <div class="d-flex align-items-center ms-2 me-3 mb-2">
+            <mat-icon class="me-2">laptop</mat-icon>
+            <div class="me-2"><strong>Job Type: </strong></div>
+            {{ getJobType(job.jobType) }}
+          </div>
+          <div class="d-flex align-items-center ms-2 me-3 mb-2">
+            <mat-icon class="me-2">group</mat-icon>
+            <div class="me-2"><strong>Openings: </strong></div>
+            {{ job.openings }}
+          </div>
+          <div class="mt-4">
+            <p class="fw-bold fs-5">About job:</p>
+            <p [innerHTML]="getHtml()"></p>
+          </div>
         </div>
-        <div class="d-flex align-items-center ms-2 me-3 mb-2">
-          <mat-icon class="me-2">group</mat-icon>
-          <div class="me-2"><strong>Openings: </strong></div>
-          {{ job.openings }}
-        </div>
-      </div>
-      <div>
-        <p class="fw-medium fs-5">Description:</p>
-        <p>{{ job.description }}</p>
       </div>
     </mat-card-content>
   </mat-card>

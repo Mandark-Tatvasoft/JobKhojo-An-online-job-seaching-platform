@@ -72,15 +72,15 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("DisableUser")]
-        public IActionResult disableUser(int id)
+        [HttpPut("ToggleUserActive")]
+        public IActionResult toggleUserActive(int id)
         {
             var res = new ResponseModel<string>();
-            var isSuccess = _user.DisableUser(id);
+            var isSuccess = _user.ToggleUserActive(id);
             if (isSuccess)
             {
                 res.IsSuccess = true;
-                res.Message = "User edited successfully";
+                res.Message = "User activity changed";
                 return Ok(res);
             }
             else
