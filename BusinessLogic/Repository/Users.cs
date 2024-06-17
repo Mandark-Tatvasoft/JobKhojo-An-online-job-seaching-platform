@@ -194,16 +194,15 @@ namespace BusinessLogic.Repository
         public bool AdminEditUser(SignupModel model, int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == id);
-            var oldUser = user;
+            
+            
             if (user != null)
             {
-                _mapper.Map(model, user);
-                user.Resume = oldUser.Resume;
-                user.Username = oldUser.Username;
-                user.AppliedJobs = oldUser.AppliedJobs;
-                user.SavedJobs = oldUser.SavedJobs;
-                user.CompanyName = oldUser.CompanyName;
-                user.PasswordHashed = oldUser.PasswordHashed;
+                user.Mobile = model.Mobile;
+                user.CompanyName = model.CompanyName;
+                user.Email = model.Email;
+                user.Firstname = model.Firstname;
+                user.Lastname = model.Lastname;
 
                 try
                 {
