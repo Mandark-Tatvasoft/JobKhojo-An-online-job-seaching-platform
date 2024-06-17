@@ -24,6 +24,10 @@
           <input matInput name="subtitle" formControlName="subtitle" />
           @if (editJobForm.get('subtitle')?.hasError('required')) {
           <mat-error>Subtitle is required</mat-error>
+          } @if (editJobForm.get('subtitle')?.hasError('maxLength')) {
+          <mat-error
+            >Subtitle should not be more than 50 letters long</mat-error
+          >
           }
         </mat-form-field>
         <mat-form-field class="form-input mb-2 col-md-6">

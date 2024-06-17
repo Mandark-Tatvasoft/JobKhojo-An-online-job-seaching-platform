@@ -3,3 +3,8 @@
   box-shadow: none;
   border: 1px solid #c2c2c2;
 }
+.details-div {
+  border: solid 1px #c2c2c2;
+  border-radius: 15px;
+  background-color: white;
+}

@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5 pb-5">
   <mat-card class="mb-4 p-4 job-desc">
     <mat-card-content>
       <div class="d-flex justify-content-between align-items-center">
@@ -20,36 +20,38 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card class="p-4 job-desc">
+  <mat-card class="p-4 job-desc mb-5">
     <mat-card-content>
       <div class="mb-4">
         <p class="fw-bold fs-4">Description:</p>
-        <div class="p-3">
-          <div class="d-flex align-items-center ms-2 me-3 mb-2">
-            <mat-icon class="me-2">place</mat-icon>
-            <div class="me-2"><strong>Location :</strong></div>
-            {{ getLocation(job.location) }}
-          </div>
+        <div class="">
+          <div class="p-3 details-div">
+            <div class="d-flex align-items-center ms-2 me-3 mb-2">
+              <mat-icon class="me-2">place</mat-icon>
+              <div class="me-2"><strong>Location :</strong></div>
+              {{ getLocation(job.location) }}
+            </div>
 
-          <div class="d-flex align-items-center ms-2 me-2 mb-2">
-            <mat-icon class="me-2">currency_rupee</mat-icon>
-            <div class="me-2"><strong>Salary :</strong></div>
-            {{ job.salary / 1000 }}K / annum
-          </div>
+            <div class="d-flex align-items-center ms-2 me-2 mb-2">
+              <mat-icon class="me-2">currency_rupee</mat-icon>
+              <div class="me-2"><strong>Salary :</strong></div>
+              {{ job.salary | currency : "INR" }}
+            </div>
 
-          <div class="d-flex align-items-center ms-2 me-3 mb-2">
-            <mat-icon class="me-2">laptop</mat-icon>
-            <div class="me-2"><strong>Job Type: </strong></div>
-            {{ getJobType(job.jobType) }}
-          </div>
-          <div class="d-flex align-items-center ms-2 me-3 mb-2">
-            <mat-icon class="me-2">group</mat-icon>
-            <div class="me-2"><strong>Openings: </strong></div>
-            {{ job.openings }}
+            <div class="d-flex align-items-center ms-2 me-3 mb-2">
+              <mat-icon class="me-2">laptop</mat-icon>
+              <div class="me-2"><strong>Job Type: </strong></div>
+              {{ getJobType(job.jobType) }}
+            </div>
+            <div class="d-flex align-items-center ms-2 me-3 mb-2">
+              <mat-icon class="me-2">group</mat-icon>
+              <div class="me-2"><strong>Openings: </strong></div>
+              {{ job.openings }}
+            </div>
           </div>
           <div class="mt-4">
-            <p class="fw-bold fs-5">About job:</p>
-            <p [innerHTML]="getHtml()"></p>
+            <p class="fw-bold fs-5 ps-2">About job:</p>
+            <p [innerHTML]="getHtml()" class="ps-4 pe-4"></p>
           </div>
         </div>
       </div>

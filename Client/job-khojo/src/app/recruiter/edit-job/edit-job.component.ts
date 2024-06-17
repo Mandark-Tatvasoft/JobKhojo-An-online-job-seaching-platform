@@ -103,7 +103,10 @@ export class EditJobComponent {
     this.editJobForm = this.fb.group({
       jobId: [0],
       title: ['', [Validators.required, spaceValidator]],
-      subtitle: ['', [Validators.required, spaceValidator]],
+      subtitle: [
+        '',
+        [Validators.required, Validators.maxLength(50), spaceValidator],
+      ],
       description: ['', [Validators.required, spaceValidator]],
       openings: [1, [Validators.required, Validators.min(1)]],
       salary: [0, [Validators.required, Validators.min(1)]],

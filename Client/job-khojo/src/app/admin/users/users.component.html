@@ -29,6 +29,7 @@
             <mat-slide-toggle
               [(ngModel)]="user.isActive"
               (change)="disableUser(user.userId)"
+              [disabled]="isDisabled"
             ></mat-slide-toggle>
           </td>
           <td class="text-end">

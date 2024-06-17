@@ -51,8 +51,11 @@ public class Login : ILogin
         {
             if (model.Email == null || model.Password == null || model.RoleId == 0) return false;
 
-            var newUser = new User() { IsActive = true };
+            var newUser = new User();
             _mapper.Map(model, newUser);
+            newUser.IsActive = true;
+            newUser.AppliedJobs = new int[0];
+            newUser.SavedJobs = new int[0];
 
             try
             {

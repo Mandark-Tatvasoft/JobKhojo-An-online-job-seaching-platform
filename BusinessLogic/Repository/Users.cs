@@ -95,13 +95,11 @@ namespace BusinessLogic.Repository
         {
             if (model.Password == model.ConfirmPassword)
             {
-                var newUser = new User()
-                {
-                    AppliedJobs = new int[0],
-                    SavedJobs = new int[0],
-                    IsActive = true
-                };
+                var newUser = new User();
                 _mapper.Map(model, newUser);
+                newUser.AppliedJobs = new int[0];
+                newUser.SavedJobs = new int[0];
+                newUser.IsActive = true;
 
                 try
                 {
@@ -157,7 +155,7 @@ namespace BusinessLogic.Repository
             try
             {
                 string path = contentPath;
-                string filePath = model.UserId + "_Resume." + model.ResumeFile.FileName.Split('.').LastOrDefault();
+                string filePath = model.UserId + "_" + model.ResumeFile.FileName;
                 string fullPath = Path.Combine(path, filePath);
 
                 IFormFile file1 = model.ResumeFile;

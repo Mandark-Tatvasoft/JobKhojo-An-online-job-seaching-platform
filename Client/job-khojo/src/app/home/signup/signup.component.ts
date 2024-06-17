@@ -65,7 +65,7 @@ export class SignupComponent {
         '',
         [
           Validators.required,
-          Validators.pattern('^[\\w-]+@([\\w-]+.)+[\\w-]{2,4}$'),
+          Validators.pattern('^[\\w-\\.]+@([\\w-]+.)+[\\w-]{2,4}$'),
           Validators.email,
         ],
       ],

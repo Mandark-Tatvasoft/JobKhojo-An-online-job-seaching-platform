@@ -78,6 +78,8 @@ export class ProfileComponent {
       if (path) {
         localStorage.removeItem('path');
         this.router.navigate([path.slice(1, path.length)]);
+      } else {
+        this.router.navigate(['jobs']);
       }
     });
   }

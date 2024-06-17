@@ -77,7 +77,7 @@ public class Jobs : IJobs
                 var job = new JobModel();
                 _mapper.Map(item, job);
 
-                var appliedUsers = users.Where(x => item.AppliedBy.Contains(x.UserId)).ToList();
+                var appliedUsers = users.Where(x => item.AppliedBy!.Contains(x.UserId)).ToList();
                 var appUsers = new List<ProfileModel>();
                 foreach(var user in appliedUsers)
                 {
@@ -244,8 +244,9 @@ public class Jobs : IJobs
 
     public bool AddJob(JobModel model)
     {
-        var newJob = new Job() { AppliedBy = new int[0] };
+        var newJob = new Job();
         _mapper.Map(model, newJob);
+        newJob.AppliedBy = new int[0];
 
         try
         {

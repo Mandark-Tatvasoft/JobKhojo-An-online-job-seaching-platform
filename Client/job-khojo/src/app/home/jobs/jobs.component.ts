@@ -18,6 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ModelFormGroup } from '../../core/models/form-type.model';
 import { Search } from '../../core/models/search.model';
+import { error } from 'node:console';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-jobs',
@@ -46,7 +48,8 @@ export class JobsComponent {
     private service: HomeService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.initializeForm();
   }
@@ -112,11 +115,16 @@ export class JobsComponent {
   }
 
   searchJobs(model: Search) {
-    this.service.searchJobs(model).subscribe((res) => {
-      if (res.isSuccess) {
-        this.jobs = res.data;
+    this.service.searchJobs(model).subscribe(
+      (res) => {
+        if (res.isSuccess) {
+          this.jobs = res.data;
+        }
+      },
+      (error: Error) => {
+        this.toastr.error(error.message, 'Error', { timeOut: 2000 });
       }
-    });
+    );
   }
 
   getJobs() {

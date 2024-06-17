@@ -18,6 +18,7 @@ export class UsersComponent {
   constructor(private service: AdminService, private router: Router) {}
 
   users: Userdata[] = [];
+  isDisabled: boolean = false;
 
   ngOnInit() {
     this.service.getUsers().subscribe((res) => {
@@ -34,6 +35,9 @@ export class UsersComponent {
   }
 
   disableUser(userId: number) {
-    this.service.disableUser(userId).subscribe();
+    this.isDisabled = true;
+    this.service
+      .disableUser(userId)
+      .subscribe((res) => (this.isDisabled = false));
   }
 }
